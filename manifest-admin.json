@@ -1,0 +1,26 @@
+{
+  "name": "Panel Rodízio Cúcuta",
+  "short_name": "Panel Rodízio",
+  "description": "Panel del restaurante: pedidos, inventario, menú y reportes.",
+  "start_url": "./admin.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f1e8",
+  "theme_color": "#f7f1e8",
+  "lang": "es-CO",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

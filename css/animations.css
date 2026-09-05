@@ -1,0 +1,97 @@
+/* =========================================================
+   Animaciones — el elemento distintivo: la brasa que respira
+   ========================================================= */
+
+#splash {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-4);
+  background: var(--color-bg);
+  transition: opacity 0.4s ease;
+}
+#splash.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+#splash .brand-mark {
+  width: 64px;
+  height: 64px;
+  animation: ember-breathe 1.8s ease-in-out infinite;
+}
+#splash .brand-name {
+  font-size: var(--fs-xl);
+  letter-spacing: 0.06em;
+}
+#splash .spark-line {
+  width: 120px;
+  height: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+  overflow: hidden;
+  position: relative;
+}
+#splash .spark-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, var(--color-flame), var(--color-gold), transparent);
+  animation: spark-travel 1.1s ease-in-out infinite;
+}
+
+@keyframes spark-travel {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(340%); }
+}
+
+@keyframes ember-breathe {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(232, 65, 44, 0.35)); transform: scale(1); }
+  50% { filter: drop-shadow(0 0 16px rgba(232, 65, 44, 0.7)); transform: scale(1.05); }
+}
+
+/* Brillo sutil y constante en el tab activo, como brasa encendida */
+.category-tab.is-active {
+  animation: tab-glow 2.4s ease-in-out infinite;
+}
+@keyframes tab-glow {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(232, 65, 44, 0.35), 0 0 14px rgba(232, 65, 44, 0.2); }
+  50% { box-shadow: 0 0 0 1px rgba(232, 65, 44, 0.45), 0 0 22px rgba(232, 65, 44, 0.4); }
+}
+
+/* Entrada de tarjetas — escalonada (cascada), no todas de golpe.
+   `--i` lo pone ui.js por tarjeta (índice dentro de la grilla que se
+   está pintando); min() limita el retraso máximo a 320ms para que
+   una categoría con muchos productos no tarde varios segundos en
+   terminar de aparecer completa. */
+.product-card {
+  animation: rise-in 0.35s ease both;
+  animation-delay: min(calc(var(--i, 0) * 35ms), 320ms);
+}
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Pop del botón agregar */
+@keyframes pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+.add-btn.is-popping {
+  animation: pop 0.25s ease;
+}
+
+/* Sacudida suave del ícono de carrito al agregar un producto */
+@keyframes nav-nudge {
+  0%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-4px); }
+}
+.bottom-nav-item.is-nudging {
+  animation: nav-nudge 0.32s ease;
+}

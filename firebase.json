@@ -1,0 +1,125 @@
+{
+  "functions": {
+    "source": "functions"
+  },
+  "hosting": [
+    {
+      "target": "marketplace",
+      "public": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**",
+        "functions/**",
+        "server.js",
+        "package.json",
+        "package-lock.json",
+        "README.md",
+        "CLAUDE.md"
+      ],
+      "headers": [
+        {
+          "source": "**/*.@(html|js|css|json)",
+          "headers": [
+            { "key": "Cache-Control", "value": "no-cache, max-age=0, must-revalidate" }
+          ]
+        },
+        {
+          "source": "images/**",
+          "headers": [
+            { "key": "Cache-Control", "value": "public, max-age=604800" }
+          ]
+        },
+        {
+          "source": "**",
+          "headers": [
+            { "key": "X-Content-Type-Options", "value": "nosniff" },
+            { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+            { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+            { "key": "Permissions-Policy", "value": "geolocation=(self), camera=(), microphone=()" }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "admin",
+      "public": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**",
+        "functions/**",
+        "server.js",
+        "package.json",
+        "package-lock.json",
+        "README.md",
+        "CLAUDE.md",
+        "index.html"
+      ],
+      "rewrites": [{ "source": "/", "destination": "/admin.html" }],
+      "headers": [
+        {
+          "source": "**/*.@(html|js|css|json)",
+          "headers": [
+            { "key": "Cache-Control", "value": "no-cache, max-age=0, must-revalidate" }
+          ]
+        },
+        {
+          "source": "images/**",
+          "headers": [
+            { "key": "Cache-Control", "value": "public, max-age=604800" }
+          ]
+        },
+        {
+          "source": "**",
+          "headers": [
+            { "key": "X-Content-Type-Options", "value": "nosniff" },
+            { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+            { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+            { "key": "Permissions-Policy", "value": "geolocation=(self), camera=(), microphone=()" }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "driver",
+      "public": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**",
+        "functions/**",
+        "server.js",
+        "package.json",
+        "package-lock.json",
+        "README.md",
+        "CLAUDE.md",
+        "index.html"
+      ],
+      "rewrites": [{ "source": "/", "destination": "/driver.html" }],
+      "headers": [
+        {
+          "source": "**/*.@(html|js|css|json)",
+          "headers": [
+            { "key": "Cache-Control", "value": "no-cache, max-age=0, must-revalidate" }
+          ]
+        },
+        {
+          "source": "images/**",
+          "headers": [
+            { "key": "Cache-Control", "value": "public, max-age=604800" }
+          ]
+        },
+        {
+          "source": "**",
+          "headers": [
+            { "key": "X-Content-Type-Options", "value": "nosniff" },
+            { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+            { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+            { "key": "Permissions-Policy", "value": "geolocation=(self), camera=(), microphone=()" }
+          ]
+        }
+      ]
+    }
+  ]
+}

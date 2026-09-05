@@ -1,0 +1,503 @@
+/* =========================================================
+   App de domiciliarios — estilos propios
+   =========================================================
+   Reutiliza variables.css, base.css, layout.css, components.css
+   y admin.css (gate de acceso, pestañas tipo segmented, badges,
+   toasts); esto es solo lo específico de esta app. Pensada para
+   usarse desde el celular del domiciliario mientras se mueve, así
+   que prioriza botones grandes y poca lectura por pantalla.
+   ========================================================= */
+
+#driver-app {
+  /* Sin max-width/margin:auto — mismo criterio que #app/#admin-app:
+     antes topaba en 480px fijo incluso en celulares grandes o
+     tablets, dejando franjas vacías y el header "cortado". Ahora
+     ocupa el 100% real; ver más abajo cómo la grilla de pedidos
+     suma columnas en vez de depender de un tope de ancho. */
+  width: 100%;
+  min-height: 100%;
+  background: var(--color-bg);
+}
+
+/* --- "Modo carretera" ---
+   El domiciliario mira esto con el celular montado en la moto,
+   manejando — necesita leer de un vistazo, no acercarse ni forzar
+   la vista. Se sube la escala de letra bastante más que en el panel
+   (esto sí es un caso de seguridad vial, no solo de comodidad) y se
+   aclaran los colores de texto secundario, que por defecto son
+   apagados a propósito para el resto del sitio. Con :has() para que
+   también alcance a los diálogos de confirm.js (se insertan como
+   hijos de <body>, fuera de #driver-app) y no solo a esta tarjeta. */
+body:has(#driver-app) {
+  --fs-xs: 0.9375rem;   /* 15px, era 12px */
+  --fs-sm: 1.0625rem;   /* 17px, era 14px */
+  --fs-base: 1.125rem;  /* 18px, era 16px */
+  --fs-md: 1.375rem;    /* 22px, era 18px */
+  --fs-lg: 1.75rem;     /* 28px, era 22px */
+}
+body:has(#driver-app) {
+  --color-text-faint: #4a3b30;  /* bastante más contraste que el default (#8f7d6d) */
+  --color-text-muted: #2f241c;  /* idem (default #6b5a4c) */
+}
+
+.admin-gate #driver-auth-form {
+  text-align: left;
+}
+
+/* --- Saludo + estado de disponibilidad --- */
+.driver-greeting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-5) var(--sp-4) var(--sp-3);
+}
+.driver-greeting-hi {
+  font-size: var(--fs-xs);
+  color: var(--color-text-faint);
+}
+.driver-greeting-name {
+  font-size: var(--fs-lg);
+  line-height: 1.1;
+}
+.driver-rating-summary {
+  margin-top: 2px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-gold);
+}
+.driver-status-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+.driver-status-pill:active {
+  transform: scale(0.96);
+}
+.driver-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-text-faint);
+}
+.driver-status-pill.is-available {
+  color: #3fbf7f;
+  background: rgba(63, 191, 127, 0.1);
+  border-color: rgba(63, 191, 127, 0.35);
+}
+.driver-status-pill.is-available .driver-status-dot {
+  background: #3fbf7f;
+  box-shadow: 0 0 0 3px rgba(63, 191, 127, 0.25);
+}
+
+/* --- Números de hoy --- */
+.driver-quick-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-2);
+  margin: 0 var(--sp-4) var(--sp-4);
+}
+.driver-quick-stat {
+  padding: var(--sp-3);
+  text-align: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+.driver-quick-stat-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--color-gold);
+}
+.driver-quick-stat-label {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-faint);
+  text-transform: uppercase;
+}
+
+/* --- Tarjeta de perfil / disponibilidad ---
+   Es un <details> (se llena una sola vez y casi no se vuelve a
+   tocar) — abierto por defecto para no esconder el formulario la
+   primera vez, pero plegable después para no quitarle protagonismo
+   a pedidos/cierre de turno, que sí se usan a diario. */
+.driver-profile-card {
+  margin: var(--sp-4);
+  padding: var(--sp-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+.driver-section-summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.driver-section-summary::after {
+  content: '▾';
+  color: var(--color-text-faint);
+  transition: transform 0.15s ease;
+}
+.driver-profile-card:not([open]) .driver-section-summary::after {
+  transform: rotate(-90deg);
+}
+.driver-section-summary::-webkit-details-marker {
+  display: none;
+}
+.driver-section-summary .driver-cash-title {
+  display: inline;
+}
+.driver-profile-card[open] .driver-section-summary {
+  margin-bottom: var(--sp-3);
+}
+.driver-profile-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+.driver-profile-card .btn {
+  width: 100%;
+  margin-top: var(--sp-3);
+}
+
+/* --- Tarjeta de cierre de turno / rendición de efectivo ---
+   Como todos los pedidos hoy se pagan contra-entrega (no hay
+   pasarela de pago activa), lo que el domiciliario entrega es
+   exactamente la suma de los pedidos que marcó "Entregado" y aún
+   no ha rendido — este bloque le muestra cuánto debería llevar
+   encima y le deja registrar cuánto entrega de verdad. */
+.driver-cash-card {
+  margin: 0 var(--sp-4) var(--sp-4);
+  padding: var(--sp-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+.driver-cash-title {
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  margin-bottom: var(--sp-2);
+}
+.driver-cash-summary {
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--sp-3);
+}
+.driver-cash-summary strong {
+  color: var(--color-flame);
+}
+.driver-cash-card .btn {
+  width: 100%;
+  margin-top: var(--sp-3);
+}
+.driver-cash-history {
+  margin-top: var(--sp-3);
+}
+.driver-cash-history summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--color-text-faint);
+  font-size: var(--fs-xs);
+}
+.driver-cash-history-row {
+  margin-top: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
+.driver-cash-history-row strong {
+  color: var(--color-text);
+}
+
+.driver-tabs {
+  margin: 0 var(--sp-4) var(--sp-4);
+}
+
+/* --- Tarjeta de pedido --- */
+.driver-order {
+  margin: 0 var(--sp-4) var(--sp-3);
+  padding: var(--sp-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+.driver-order.is-tracking {
+  border-color: var(--color-flame);
+  box-shadow: 0 0 0 1px var(--color-flame);
+}
+.driver-order-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--sp-2);
+}
+.driver-order-customer {
+  font-weight: 800;
+  font-size: var(--fs-md);
+}
+.driver-order-address {
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--sp-2);
+  line-height: 1.5;
+}
+.driver-precise-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #3fbf7f;
+  background: rgba(63, 191, 127, 0.12);
+  border: 1px solid rgba(63, 191, 127, 0.35);
+  border-radius: var(--radius-pill);
+  padding: 2px 7px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+.driver-multi-hint {
+  margin: 0 var(--sp-4) var(--sp-3);
+  padding: var(--sp-3);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-flame);
+  background: rgba(232, 65, 44, 0.1);
+  border: 1px solid rgba(232, 65, 44, 0.3);
+  border-radius: var(--radius-md);
+}
+.driver-order-items {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--sp-3);
+  line-height: 1.6;
+}
+.driver-order-note {
+  font-size: var(--fs-xs);
+  color: var(--color-gold);
+  background: rgba(217, 165, 68, 0.1);
+  border: 1px solid rgba(217, 165, 68, 0.35);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  margin-bottom: var(--sp-3);
+}
+.driver-order-actions {
+  display: flex;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-2);
+}
+.driver-action-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 10px;
+  min-height: 48px; /* objetivo de toque cómodo con guantes/en movimiento */
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+.driver-action-btn:active {
+  transform: scale(0.97);
+}
+.driver-action-btn.driver-call-btn {
+  color: #4ba8ff;
+  background: rgba(75, 168, 255, 0.1);
+  border-color: rgba(75, 168, 255, 0.35);
+}
+.driver-action-btn.driver-map-btn {
+  color: #3fbf7f;
+  background: rgba(63, 191, 127, 0.1);
+  border-color: rgba(63, 191, 127, 0.35);
+}
+.driver-primary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  width: 100%;
+  padding: var(--sp-3);
+  min-height: 52px;
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  color: var(--color-bg);
+  background: var(--color-flame);
+  border-radius: var(--radius-sm);
+}
+.driver-primary-btn:active {
+  transform: scale(0.98);
+}
+.driver-primary-btn:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+/* Mismo spinner de carga que `.btn.is-loading` (components.css) —
+   estos botones no usan la clase `.btn` (tienen su propio tamaño de
+   toque más grande, pensado para tocar en la calle), así que se
+   repite la regla acá con las mismas keyframes compartidas
+   (`btn-spin`) en vez de forzarles la clase `.btn`. Recorre menos
+   pantalla que el "Confirmar pedido" del cliente: la tarjeta de este
+   pedido sale de la lista apenas Firebase confirma, así que solo
+   vale la pena el spinner (evita el doble toque), no un check de
+   éxito que nunca llegaría a verse completo. */
+.driver-primary-btn.is-loading,
+.driver-secondary-btn.is-loading {
+  pointer-events: none;
+  opacity: 0.85;
+}
+.driver-primary-btn.is-loading::before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(23, 17, 14, 0.3);
+  border-top-color: var(--color-bg);
+  animation: btn-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+.driver-secondary-btn.is-loading::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(107, 90, 76, 0.3);
+  border-top-color: var(--color-text-muted);
+  animation: btn-spin 0.7s linear infinite;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: -2px;
+  margin-right: 6px;
+}
+/* Acción secundaria bajo el botón principal — "no pude tomar este
+   pedido" / "no se pudo entregar". A propósito discreta (no es un
+   botón rojo llamativo): son acciones que sí hay que dejar hacer,
+   pero no queremos que compitan visualmente con la acción normal
+   del flujo (recoger / entregar). */
+.driver-secondary-btn {
+  width: 100%;
+  margin-top: var(--sp-2);
+  padding: 10px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-text-muted);
+  background: none;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+}
+.driver-secondary-btn:active {
+  transform: scale(0.98);
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+.driver-tracking-indicator {
+  margin-top: var(--sp-3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-flame);
+}
+.driver-tracking-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-flame);
+  animation: driver-pulse-dot 1.4s ease-in-out infinite;
+}
+@keyframes driver-pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+.driver-order-chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-faint);
+  margin-bottom: var(--sp-2);
+}
+
+/* En celular es una sola columna de arriba a abajo (por defecto,
+   pensado para usarse mientras se conduce). Desde tablet se
+   aprovecha el ancho extra: la lista de pedidos pasa a grilla y el
+   saludo/números de hoy quedan en una franja horizontal más ancha,
+   igual que en el panel de administración. */
+.driver-multi-hint {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 720px) {
+  #driver-orders-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--sp-3);
+    padding: 0 var(--sp-4);
+  }
+  .driver-order {
+    margin: 0;
+  }
+  .driver-quick-stats {
+    max-width: 460px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .app-header {
+    padding-left: var(--sp-6);
+    padding-right: var(--sp-6);
+  }
+  .driver-greeting {
+    padding: var(--sp-6) var(--sp-6) var(--sp-3);
+  }
+  .driver-profile-card,
+  .driver-tabs,
+  #driver-orders-list {
+    margin-left: var(--sp-6);
+    margin-right: var(--sp-6);
+  }
+  .driver-quick-stats {
+    margin-left: var(--sp-6);
+    margin-right: var(--sp-6);
+  }
+  #driver-orders-list {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0;
+  }
+  .driver-profile-card {
+    max-width: 640px;
+  }
+}
+
+/* --- Monitor de escritorio grande --- una columna más en la lista
+   de pedidos, mismo criterio que admin.css. Un domiciliario
+   normalmente usa el celular, pero si algún día alguien la abre en
+   un monitor grande (ej. para revisar cierres desde un computador),
+   que se vea igual de aprovechada que las otras dos apps. */
+@media (min-width: 1440px) {
+  #driver-orders-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

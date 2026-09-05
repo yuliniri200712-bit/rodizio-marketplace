@@ -1,0 +1,21 @@
+{
+  "projects": {
+    "default": "rodiziomarketplace"
+  },
+  "targets": {
+    "rodiziomarketplace": {
+      "hosting": {
+        "marketplace": [
+          "rodiziomarketplace"
+        ],
+        "admin": [
+          "rodizio-admin"
+        ],
+        "driver": [
+          "rodizio-driver"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

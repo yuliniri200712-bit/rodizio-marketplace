@@ -1,0 +1,9 @@
+{
+  "name": "rodizio-cucuta",
+  "version": "1.0.0",
+  "private": true,
+  "description": "App de pedidos Rodízio Cúcuta (menú, carrito, checkout) + panel de administración.",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

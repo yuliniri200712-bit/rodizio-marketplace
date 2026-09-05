@@ -1,0 +1,1090 @@
+/* =========================================================
+   Componentes
+   ========================================================= */
+
+/* --- Tab de categoría --- */
+.category-tab {
+  flex-shrink: 0;
+  padding: 9px 18px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  white-space: nowrap;
+  position: relative;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.category-tab.is-active {
+  color: var(--color-bg);
+  background: var(--color-flame);
+  border-color: var(--color-flame);
+  box-shadow: var(--shadow-glow-flame);
+}
+
+/* --- Tarjeta de producto --- */
+.product-card {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--sp-3);
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+}
+.product-card:active {
+  transform: scale(0.98);
+}
+.product-card:hover {
+  border-color: var(--color-flame);
+  box-shadow: var(--shadow-card), var(--shadow-glow-flame);
+}
+
+.product-thumb {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(160deg, var(--color-ember), var(--color-surface-raised));
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.product-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.product-thumb img.is-loaded {
+  opacity: 1;
+}
+
+/* --- Favoritos --- */
+.fav-toggle {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(10, 7, 5, 0.55);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+.fav-toggle:active {
+  transform: scale(0.88);
+}
+.fav-toggle.is-active {
+  color: var(--color-flame);
+}
+
+.product-info {
+  flex: 1;
+  min-width: 0;
+}
+.product-name {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: var(--fs-sm);
+  color: var(--color-text);
+  margin-bottom: 2px;
+}
+.product-desc {
+  font-size: var(--fs-xs);
+  color: var(--color-text-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin-bottom: var(--sp-2);
+}
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.product-card.is-out-of-stock {
+  opacity: 0.55;
+}
+
+/* --- Lo más pedido: carrusel horizontal de destacados ---
+   Muestra los productos que el panel marcó con una insignia (ej.
+   "Más pedido") — se oculta solo si ninguno tiene una. */
+.featured-section {
+  padding-top: var(--sp-2);
+}
+.featured-title {
+  padding: 0 var(--sp-4);
+  margin-bottom: var(--sp-3);
+}
+.featured-scroll {
+  display: flex;
+  gap: var(--sp-3);
+  padding: 0 var(--sp-4) var(--sp-2);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+.featured-scroll::-webkit-scrollbar {
+  display: none;
+}
+.featured-card {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  width: 148px;
+  text-align: left;
+  cursor: pointer;
+}
+.featured-card:active {
+  transform: scale(0.97);
+}
+.featured-thumb {
+  position: relative;
+  width: 148px;
+  height: 118px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: linear-gradient(160deg, var(--color-ember), var(--color-surface-raised));
+  box-shadow: var(--shadow-card);
+}
+.featured-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.featured-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-bg);
+  background: var(--color-gold);
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+}
+.featured-card.is-out-of-stock .featured-thumb {
+  opacity: 0.5;
+}
+.featured-name {
+  margin-top: var(--sp-2);
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: var(--fs-sm);
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.featured-price {
+  font-size: var(--fs-xs);
+  color: var(--color-gold);
+  font-weight: 700;
+}
+.product-card.is-out-of-stock .add-btn {
+  display: none;
+}
+.product-badge-out {
+  color: var(--color-danger);
+  border-color: rgba(214, 69, 69, 0.5);
+}
+.modal-out-of-stock-notice {
+  color: var(--color-danger);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  padding: 0 var(--sp-4);
+  margin-top: calc(var(--sp-3) * -1);
+  margin-bottom: var(--sp-3);
+}
+.product-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  border: 1px solid rgba(217, 165, 68, 0.5);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  margin-bottom: 4px;
+}
+
+.add-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-flame);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+.add-btn:active {
+  transform: scale(0.9);
+  background: var(--color-flame-hover);
+}
+
+/* --- Botones genéricos --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: var(--radius-pill);
+  font-weight: 800;
+  font-size: var(--fs-sm);
+  letter-spacing: 0.01em;
+  transition: filter 0.15s ease, transform 0.1s ease;
+}
+/* Mismo gotcha de siempre (ver nota en CLAUDE.md): un selector de
+   una sola clase como .btn tiene la misma especificidad que
+   [hidden], y al ser una regla de autor le gana a la regla del
+   navegador [hidden]{display:none} — cualquier <button class="btn"
+   hidden> se quedaba visible (ej. "Cerrar sesión" del panel/
+   domiciliarios en la pantalla de login, antes de iniciar sesión). */
+.btn[hidden] {
+  display: none;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-flame), var(--color-ember));
+  color: #fff;
+}
+.btn-primary:disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+.btn-primary:hover {
+  filter: brightness(1.08);
+}
+
+/* --- Estados "premium" de envío: carga y éxito ---
+   Pensado para acciones que tardan un momento en confirmarse contra
+   Firebase (hoy: confirmar pedido) — en vez de solo cambiar el texto
+   a "Enviando…", un spinner y un check animado dan la sensación de
+   que la app está haciendo algo real, no que el botón está roto.
+   Genérico a propósito (no ligado a "pedido") para poder reusarse
+   después en otras acciones de envío de las 3 apps (ej. cierre de
+   turno, marcar entregado). */
+.btn.is-loading {
+  pointer-events: none;
+  opacity: 0.85;
+}
+.btn.is-loading::before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  animation: btn-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+.btn-ghost.is-loading::before {
+  border-color: rgba(42, 30, 23, 0.25);
+  border-top-color: var(--color-text);
+}
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn.is-success {
+  pointer-events: none;
+  background: linear-gradient(135deg, var(--color-success), #3a6230);
+}
+.btn.is-success::before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  background: #fff;
+  clip-path: polygon(9% 43%, 0 55%, 36% 92%, 100% 24%, 88% 12%, 36% 66%);
+  animation: btn-check-pop 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes btn-check-pop {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.btn-ghost {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+.btn-google {
+  background: #fff;
+  color: #1f1f1f;
+}
+.btn-danger-link {
+  background: none;
+  color: var(--color-danger);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  width: auto;
+  padding: var(--sp-2);
+}
+.btn-danger-solid {
+  background: linear-gradient(135deg, var(--color-danger), #a83232);
+  color: #fff;
+}
+.btn-danger-solid:hover {
+  filter: brightness(1.08);
+}
+
+/* --- Diálogo de confirmación (confirm.js) ---
+   Reemplaza al window.confirm() nativo del navegador con el
+   mismo lenguaje visual del resto de la app (tarjeta oscura +
+   overlay compartido con drawers/modales). Centrado en pantalla,
+   no lateral/inferior como drawer/modal. */
+.confirm-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-4);
+  /* Por encima de drawers (--z-drawer/+1) y modales (--z-modal/+1)
+     — este diálogo puede abrirse sobre cualquiera de los dos (ej.
+     "Cerrar sesión" desde el drawer de perfil), así que siempre
+     tiene que quedar en la capa más alta de toda la app. */
+  z-index: calc(var(--z-modal) + 100);
+}
+.confirm-dialog {
+  width: min(100%, 360px);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5) var(--sp-4) var(--sp-4);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  transform: scale(0.94);
+  opacity: 0;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+.confirm-overlay.is-open .confirm-dialog {
+  transform: scale(1);
+  opacity: 1;
+}
+.confirm-dialog-message {
+  color: var(--color-text);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  margin-bottom: var(--sp-4);
+}
+.confirm-dialog-input {
+  text-align: center;
+  font-size: var(--fs-lg);
+  font-weight: 800;
+}
+.confirm-dialog .field {
+  margin-bottom: var(--sp-3);
+}
+.confirm-dialog-actions {
+  display: flex;
+  gap: var(--sp-3);
+}
+.confirm-dialog-actions .btn {
+  width: auto;
+  flex: 1;
+}
+
+/* --- Lista de motivos (pickReasonDialog en confirm.js) --- */
+.confirm-dialog-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-3);
+}
+.confirm-option-btn {
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.confirm-option-btn:hover,
+.confirm-option-btn:active {
+  background: rgba(232, 65, 44, 0.12);
+  border-color: rgba(232, 65, 44, 0.4);
+}
+
+.notif-toggle.is-enabled {
+  color: var(--color-flame);
+  border-color: rgba(232, 65, 44, 0.4);
+  background: rgba(232, 65, 44, 0.1);
+}
+.notif-toggle:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* --- Contador de cantidad --- */
+.qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 6px 10px;
+}
+.qty-stepper button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-border);
+  color: var(--color-text);
+  font-size: var(--fs-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qty-stepper span {
+  min-width: 20px;
+  text-align: center;
+  font-weight: 800;
+}
+
+/* --- Fila de ítem en carrito --- */
+.cart-item {
+  display: flex;
+  gap: var(--sp-3);
+  padding: var(--sp-3) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.cart-item-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.cart-item-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cart-item-info {
+  flex: 1;
+}
+.cart-item-name {
+  font-weight: 700;
+  font-size: var(--fs-sm);
+}
+.cart-item-unit {
+  font-size: var(--fs-xs);
+  color: var(--color-text-faint);
+}
+.cart-item-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--sp-2);
+}
+
+/* --- Checkout: encabezados de sección ---
+   El formulario de checkout junta bastantes cosas sin relación
+   visual entre sí (modo de entrega, contacto, hora, cupón, total) —
+   estos títulos cortos evitan que se sienta como un solo formulario
+   largo e indiferenciado. */
+.checkout-section-title {
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-faint);
+  margin: var(--sp-5) 0 var(--sp-3);
+}
+.checkout-section-title:first-child {
+  margin-top: 0;
+}
+.checkout-summary-box {
+  margin-top: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+/* --- Resumen / totales --- */
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+  padding: 6px 0;
+}
+.summary-row.total {
+  color: var(--color-text);
+  font-weight: 800;
+  font-size: var(--fs-md);
+  border-top: 1px solid var(--color-border);
+  margin-top: var(--sp-2);
+  padding-top: var(--sp-3);
+}
+
+/* --- Segmented control (domicilio / recoger) --- */
+.segmented {
+  display: flex;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  margin-bottom: var(--sp-4);
+}
+.segmented button {
+  flex: 1;
+  padding: 10px;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  color: var(--color-text-muted);
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+.segmented button.is-active {
+  background: var(--color-flame);
+  color: #fff;
+}
+
+/* --- Campos de formulario --- */
+.field {
+  margin-bottom: var(--sp-4);
+}
+.field label {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--color-text-faint);
+  margin-bottom: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  color: var(--color-text);
+  font-size: var(--fs-sm);
+  outline: none;
+}
+/* El <select> nativo trae su propio fondo (blanco en la mayoría de
+   navegadores) que ignora el "background" de arriba en el elemento
+   cerrado — color-scheme le avisa al navegador que dibuje sus
+   controles (flecha, menú desplegado) en variante oscura en vez de
+   la clara por defecto. */
+.field select {
+  color-scheme: dark;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a89a90' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 36px;
+}
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: var(--color-flame);
+}
+/* Campo requerido que faltó al confirmar el pedido: se resalta y
+   se le pone el foco (además del toast, para que no pase desapercibido). */
+.field input.field-error,
+.field textarea.field-error {
+  border-color: var(--color-danger);
+  animation: field-error-shake 0.3s ease;
+}
+.field input.field-error::placeholder,
+.field textarea.field-error::placeholder {
+  color: var(--color-danger);
+}
+@keyframes field-error-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+.checkbox-field:not([hidden]) {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--sp-4);
+  cursor: pointer;
+}
+.checkbox-field input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-flame);
+}
+
+/* Variante para texto largo con enlace (aviso de tratamiento de
+   datos) — la casilla se alinea con la primera línea, no con el
+   centro del párrafo. */
+.checkbox-field.checkbox-field-consent {
+  align-items: flex-start;
+}
+.checkbox-field-consent input {
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.checkbox-field-consent a {
+  color: var(--color-flame);
+  text-decoration: underline;
+}
+
+/* --- Direcciones guardadas --- */
+.saved-addresses {
+  display: flex;
+  gap: var(--sp-2);
+  overflow-x: auto;
+  margin-bottom: var(--sp-4);
+  scrollbar-width: none;
+}
+.saved-addresses::-webkit-scrollbar {
+  display: none;
+}
+.saved-address-chip {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 220px;
+  padding: 8px 10px 8px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+.saved-address-chip.is-active {
+  color: var(--color-flame);
+  border-color: rgba(232, 65, 44, 0.4);
+  background: rgba(232, 65, 44, 0.1);
+}
+.saved-address-chip-label {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.saved-address-chip-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-faint);
+  flex-shrink: 0;
+}
+
+/* --- Perfil --- */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding-bottom: var(--sp-4);
+  margin-bottom: var(--sp-4);
+  border-bottom: 1px solid var(--color-border);
+}
+.profile-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--color-flame);
+}
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.profile-name {
+  font-weight: 800;
+  font-size: var(--fs-md);
+}
+.profile-email {
+  font-size: var(--fs-xs);
+  color: var(--color-text-faint);
+}
+
+.order-row {
+  padding: var(--sp-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--sp-2);
+}
+.order-row-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-3);
+}
+.order-row-meta {
+  font-size: var(--fs-xs);
+  color: var(--color-text-faint);
+  margin-top: var(--sp-3);
+}
+.order-row-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.order-repeat-btn {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-flame);
+  background: rgba(232, 65, 44, 0.12);
+  border: 1px solid rgba(232, 65, 44, 0.35);
+  border-radius: var(--radius-pill);
+  padding: 5px 12px;
+}
+.order-repeat-btn:active {
+  transform: scale(0.96);
+}
+.order-share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: #25d366;
+  background: rgba(37, 211, 102, 0.12);
+  border: 1px solid rgba(37, 211, 102, 0.35);
+  flex-shrink: 0;
+}
+.order-share-btn:active {
+  transform: scale(0.9);
+}
+
+.order-row.is-cancelled {
+  opacity: 0.7;
+}
+.order-cancelled-tag {
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  color: var(--color-danger);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.order-cancel-btn {
+  margin-top: var(--sp-3);
+  width: 100%;
+  padding: 8px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-danger);
+  background: rgba(214, 69, 69, 0.1);
+  border: 1px solid rgba(214, 69, 69, 0.35);
+  border-radius: var(--radius-sm);
+}
+.order-rate-driver-btn {
+  margin-top: var(--sp-2);
+  width: 100%;
+  padding: 8px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: #3fbf7f;
+  background: rgba(63, 191, 127, 0.1);
+  border: 1px solid rgba(63, 191, 127, 0.35);
+  border-radius: var(--radius-sm);
+}
+
+/* --- Aviso: restaurante cerrado ---
+   :not([hidden]) es a propósito: .closed-banner tiene la misma
+   especificidad que la regla del navegador [hidden]{display:none} y,
+   por venir después en la cascada, le ganaría — dejando el aviso
+   visible siempre aunque tenga el atributo hidden. */
+.closed-banner:not([hidden]) {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 10px var(--sp-4);
+  background: rgba(214, 69, 69, 0.12);
+  border-bottom: 1px solid rgba(214, 69, 69, 0.35);
+  color: var(--color-danger);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+.closed-banner svg {
+  flex-shrink: 0;
+}
+/* "Cerramos pronto" reutiliza el mismo layout que el aviso de
+   cerrado, pero en dorado (advertencia) en vez de rojo (bloqueo). */
+.closing-soon-banner {
+  background: rgba(217, 165, 68, 0.14);
+  border-bottom: 1px solid rgba(217, 165, 68, 0.4);
+  color: var(--color-gold);
+}
+
+/* --- Accesos rápidos: agregar todos los favoritos --- */
+.add-all-favorites-bar {
+  padding: 0 var(--sp-4) var(--sp-3);
+}
+.add-all-favorites-bar .btn {
+  width: 100%;
+}
+
+/* --- Tiempo estimado de entrega/recogida --- */
+.order-eta {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-flame);
+}
+
+/* --- Rastreo en vivo del domiciliario --- */
+.order-tracking-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--sp-2);
+  padding: 8px 10px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: #3fbf7f;
+  background: rgba(63, 191, 127, 0.1);
+  border: 1px solid rgba(63, 191, 127, 0.35);
+  border-radius: var(--radius-sm);
+}
+.order-tracking-link svg {
+  flex-shrink: 0;
+}
+.order-tracking-link.order-tracking-stale {
+  color: var(--color-danger);
+  background: rgba(214, 69, 69, 0.1);
+  border-color: rgba(214, 69, 69, 0.35);
+}
+
+/* --- Acciones inferiores de una fila de pedido (recibo, cancelar) --- */
+.order-row-actions-bottom {
+  display: flex;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+.order-detail-btn {
+  flex: 1;
+  padding: 8px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+.order-row-actions-bottom .order-cancel-btn {
+  flex: 1;
+  margin-top: 0;
+}
+
+/* --- Modal: recibo detallado de un pedido --- */
+.receipt-meta {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--sp-2);
+}
+.receipt-items {
+  margin: var(--sp-4) 0;
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--color-border);
+}
+.receipt-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--fs-sm);
+  padding: 4px 0;
+}
+.receipt-item-notes {
+  font-size: var(--fs-xs);
+  color: var(--color-text-faint);
+  padding-bottom: 4px;
+}
+
+/* --- Calculadora de porciones --- */
+.portion-calc {
+  margin: 0 var(--sp-4) var(--sp-5);
+  padding: var(--sp-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+.portion-calc label {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: var(--sp-3);
+}
+.portion-calc-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+.portion-suggestion {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+.portion-suggestion:hover {
+  color: var(--color-text);
+}
+
+/* --- Campo con botón de acción integrado (ej. usar ubicación) --- */
+.input-with-action {
+  position: relative;
+}
+.input-with-action input {
+  padding-right: 42px;
+}
+.input-action-btn {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-faint);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+.input-action-btn:hover {
+  color: var(--color-flame);
+}
+.input-action-btn:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* --- Cupón de descuento (checkout) --- */
+
+.field-hint {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--color-text-faint);
+}
+.field-hint.field-hint-warning {
+  color: var(--color-danger);
+}
+.field-hint.field-hint-success {
+  color: #3fbf7f;
+}
+
+/* --- Stepper de estado del pedido --- */
+.status-stepper {
+  display: flex;
+  align-items: flex-start;
+}
+.status-step {
+  flex: 1;
+  position: relative;
+  text-align: center;
+}
+.status-step::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: -50%;
+  width: 100%;
+  height: 2px;
+  background: var(--color-border);
+  z-index: 0;
+}
+.status-step:first-child::before {
+  content: none;
+}
+.status-step.is-done::before {
+  background: var(--color-flame);
+}
+.status-dot {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 12px;
+  height: 12px;
+  margin: 0 auto 6px;
+  border-radius: 50%;
+  background: var(--color-surface-raised);
+  border: 2px solid var(--color-border);
+}
+.status-step.is-done .status-dot {
+  background: var(--color-flame);
+  border-color: var(--color-flame);
+}
+.status-label {
+  display: block;
+  font-size: 10px;
+  color: var(--color-text-faint);
+  line-height: 1.2;
+}
+.status-step.is-done .status-label {
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
+
+/* --- Toast --- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: var(--sp-5);
+  transform: translate(-50%, 20px);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  padding: 12px 20px;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  z-index: var(--z-toast);
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: var(--shadow-float);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}

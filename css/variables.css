@@ -1,0 +1,84 @@
+/* =========================================================
+   RODÍZIO CÚCUTA — Design tokens
+   Paleta clara inspirada en la parrilla: brasa, humo y espeto
+   dorado, sobre fondo cálido claro (a pedido del usuario — hubo
+   una versión con modo oscuro/claro alternable, se quitó el
+   oscuro por completo y se dejó un solo tema, sin botón para
+   cambiarlo).
+   ========================================================= */
+:root {
+  /* --- Color: crema cálido y brasa --- */
+  --color-bg: #f7f1e8;
+  --color-surface: #efe4d4;
+  --color-surface-raised: #fbf6ee;
+  --color-border: #e0d2bd;
+
+  --color-flame: #d9342a;            /* fuego vivo — acento primario (rojo intenso, menos anaranjado) */
+  --color-flame-hover: #c22a21;
+  --color-ember: #8a2016;            /* brasa profunda — CTA / hover oscuro */
+  --color-gold: #96650f;             /* espeto dorado — precios, badges premium */
+  --color-gold-soft: #b98530;
+
+  --color-text: #2a1e17;             /* texto principal sobre fondo claro */
+  --color-text-muted: #6b5a4c;
+  --color-text-faint: #8f7d6d;
+
+  --color-success: #4b7a3c;
+  --color-danger: #b23434;
+
+  /* --- Tipografía --- */
+  --font-display: 'Anton', 'Arial Narrow', sans-serif;
+  --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.375rem;
+  --fs-xl: 1.75rem;
+  --fs-2xl: 2.5rem;
+  --fs-3xl: 3.25rem;
+
+  /* --- Espaciado --- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+
+  /* --- Forma --- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  /* --- Elevación --- */
+  --shadow-card: 0 6px 16px rgba(60, 40, 20, 0.08);
+  --shadow-float: 0 10px 26px rgba(60, 40, 20, 0.12);
+  --shadow-glow-flame: 0 0 0 1px rgba(217, 52, 42, 0.25), 0 0 20px rgba(217, 52, 42, 0.12);
+
+  /* Degradado del hero/pantalla de acceso (.hero en layout.css,
+     .admin-gate en admin.css) — opacidad baja a propósito: con la
+     misma intensidad que tendría sobre un fondo oscuro, sobre este
+     fondo claro se ve un lavado salmón muy fuerte en vez de un
+     brillo sutil. */
+  --hero-glow-1: rgba(232, 65, 44, 0.12);
+  --hero-glow-2: rgba(138, 32, 22, 0.1);
+  --hero-glow-1-soft: rgba(232, 65, 44, 0.08);
+  --hero-glow-2-soft: rgba(138, 32, 22, 0.07);
+
+  /* --- Capas --- */
+  --z-header: 100;
+  --z-bottom-nav: 150;
+  --z-cart-fab: 200;
+  --z-drawer: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+
+  /* --- Layout --- */
+  --max-width: 480px; /* ancho fijo de drawers y modales: un panel de carrito no debe crecer con la pantalla */
+  --header-height: 64px;
+}

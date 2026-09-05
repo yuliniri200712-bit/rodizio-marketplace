@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Rodízio Cúcuta — Panel del restaurante</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest-admin.json" />
+  <meta name="theme-color" content="#f7f1e8" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon-512.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+  <div id="fatal-error-banner" class="fatal-error-banner" hidden>
+    <img class="brand-mark" src="icon.svg" alt="" width="48" height="48" />
+    <h3>Algo salió mal</h3>
+    <p>Tuvimos un problema inesperado en el panel. Intenta recargar la página.</p>
+    <button type="button" class="btn btn-primary" onclick="location.reload()">Recargar</button>
+  </div>
+
+  <div id="admin-app">
+
+    <header class="app-header">
+      <div class="brand">
+        <img class="brand-mark" src="icon.svg" alt="" />
+        <span class="brand-name">Panel Rodízio</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-danger-link" id="btn-admin-signout" hidden>Cerrar sesión</button>
+      </div>
+    </header>
+
+    <!-- ============ ESTADO: SIN SESIÓN ============ -->
+    <section class="admin-gate" id="gate-signed-out">
+      <div class="admin-gate-card">
+        <div class="admin-gate-icon"><img src="icon.svg" alt="" /></div>
+        <h1 class="admin-gate-title">Panel del restaurante</h1>
+        <p class="admin-gate-text" id="admin-auth-subtitle">Inicia sesión con tu correo y contraseña de administrador.</p>
+
+        <form id="admin-auth-form">
+          <div class="field">
+            <label for="admin-email">Correo</label>
+            <input id="admin-email" type="email" autocomplete="email" placeholder="tucorreo@ejemplo.com" required />
+          </div>
+          <div class="field">
+            <label for="admin-password">Contraseña</label>
+            <input id="admin-password" type="password" autocomplete="current-password" placeholder="Mínimo 6 caracteres" minlength="6" required />
+          </div>
+          <label class="checkbox-field checkbox-field-consent" id="admin-consent-row" hidden>
+            <input type="checkbox" id="admin-consent-checkbox" />
+            <span>He leído y acepto la <a href="privacidad.html#panel" target="_blank" rel="noopener noreferrer">política de tratamiento de datos personales</a>.</span>
+          </label>
+          <button type="submit" class="btn btn-primary" id="btn-admin-auth-submit">Iniciar sesión</button>
+        </form>
+
+        <div class="admin-auth-links">
+          <button type="button" class="admin-link-btn" id="btn-admin-toggle-mode">¿No tienes cuenta? Regístrate</button>
+          <button type="button" class="admin-link-btn" id="btn-admin-forgot">¿Olvidaste tu contraseña?</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ESTADO: SIN PERMISO ============ -->
+    <section class="admin-gate" id="gate-not-admin" hidden>
+      <div class="admin-gate-card">
+        <div class="admin-gate-icon admin-gate-icon-locked">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 11V8a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <h1 class="admin-gate-title">No tienes acceso</h1>
+        <p class="admin-gate-text" id="gate-not-admin-text">
+          Esta cuenta inició sesión pero no está autorizada como administradora del panel.
+        </p>
+        <button class="btn btn-ghost" id="btn-admin-signout-2">Cerrar sesión</button>
+      </div>
+    </section>
+
+    <!-- ============ PANEL (solo admins) ============ -->
+    <main id="admin-main" hidden>
+      <nav class="segmented admin-tabs" id="admin-tabs">
+        <button type="button" data-tab="pedidos" class="is-active">Pedidos<span class="admin-tab-badge" id="admin-tab-badge-pedidos" hidden>0</span></button>
+        <button type="button" data-tab="inventario">Inventario</button>
+        <button type="button" data-tab="menu" data-role="dueno">Menú</button>
+        <button type="button" data-tab="domiciliarios" data-role="dueno">Domiciliarios</button>
+        <button type="button" data-tab="reportes" data-role="dueno">Reportes</button>
+        <button type="button" data-tab="config" data-role="dueno">Configuración</button>
+      </nav>
+
+      <!-- --- Pedidos --- -->
+      <section id="tab-pedidos">
+        <div class="admin-quick-stats" id="admin-quick-stats"></div>
+        <div class="admin-search-row">
+          <input type="search" id="admin-order-search" placeholder="Buscar por nombre o teléfono…" />
+        </div>
+        <div class="admin-filter-row" id="admin-status-filter">
+          <button type="button" data-filter="todos" class="is-active">Todos<span class="admin-filter-count" data-count-for="todos"></span></button>
+          <button type="button" data-filter="recibido">Recibido<span class="admin-filter-count" data-count-for="recibido"></span></button>
+          <button type="button" data-filter="en_cocina">En cocina<span class="admin-filter-count" data-count-for="en_cocina"></span></button>
+          <button type="button" data-filter="en_camino">En camino<span class="admin-filter-count" data-count-for="en_camino"></span></button>
+          <button type="button" data-filter="entregado">Entregado<span class="admin-filter-count" data-count-for="entregado"></span></button>
+          <button type="button" data-filter="no_entregado">No entregado<span class="admin-filter-count" data-count-for="no_entregado"></span></button>
+          <button type="button" data-filter="programados">Programados<span class="admin-filter-count" data-count-for="programados"></span></button>
+          <button type="button" data-filter="cancelado">Cancelado<span class="admin-filter-count" data-count-for="cancelado"></span></button>
+        </div>
+        <div id="admin-orders-list"></div>
+      </section>
+
+      <!-- --- Inventario --- -->
+      <section id="tab-inventario" hidden>
+        <p class="admin-hint">Unidades disponibles por producto.</p>
+        <div id="admin-stock-list"></div>
+      </section>
+
+      <!-- --- Menú (categorías y productos) --- -->
+      <section id="tab-menu" hidden>
+        <div class="admin-seed-banner" id="admin-seed-banner" hidden>
+          <p>Tu base de datos todavía no tiene menú.</p>
+          <button type="button" class="btn btn-primary" id="btn-seed-catalog">Cargar menú inicial</button>
+        </div>
+
+        <div class="admin-menu-section">
+          <div class="admin-menu-section-head">
+            <h3>Categorías</h3>
+            <button type="button" class="admin-add-btn" id="btn-add-category">+ Agregar</button>
+          </div>
+          <div id="admin-categories-list"></div>
+          <form class="admin-form" id="category-form" hidden>
+            <input type="hidden" id="category-form-id" />
+            <div class="field">
+              <label for="category-form-name">Nombre</label>
+              <input id="category-form-name" type="text" placeholder="Ej: Postres" />
+            </div>
+            <div class="field">
+              <label for="category-form-order">Orden (menor número = aparece primero)</label>
+              <input id="category-form-order" type="number" value="0" />
+            </div>
+            <div class="admin-form-actions">
+              <button type="button" class="btn btn-ghost" id="btn-cancel-category">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Guardar categoría</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="admin-menu-section">
+          <div class="admin-menu-section-head">
+            <h3>Productos</h3>
+            <button type="button" class="admin-add-btn" id="btn-add-product">+ Agregar</button>
+          </div>
+          <div id="admin-products-list"></div>
+          <form class="admin-form" id="product-form" hidden>
+            <input type="hidden" id="product-form-id" />
+            <div class="field">
+              <label for="product-form-name">Nombre</label>
+              <input id="product-form-name" type="text" placeholder="Ej: Picanha" />
+            </div>
+            <div class="field">
+              <label for="product-form-category">Categoría</label>
+              <select id="product-form-category"></select>
+            </div>
+            <div class="field">
+              <label for="product-form-desc">Descripción</label>
+              <textarea id="product-form-desc" rows="2" placeholder="Descripción corta para la tarjeta"></textarea>
+            </div>
+            <div class="field">
+              <label for="product-form-price">Precio (COP)</label>
+              <input id="product-form-price" type="number" min="0" step="500" placeholder="28000" />
+            </div>
+            <div class="field">
+              <label for="product-form-image">Imagen (ruta o URL)</label>
+              <input id="product-form-image" type="text" placeholder="images/nuevo-plato.jpg" />
+            </div>
+            <div class="field">
+              <label for="product-form-badge">Insignia (opcional)</label>
+              <input id="product-form-badge" type="text" placeholder="Ej: Nuevo" />
+            </div>
+            <div class="admin-form-actions">
+              <button type="button" class="btn btn-ghost" id="btn-cancel-product">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Guardar producto</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- --- Domiciliarios --- -->
+      <section id="tab-domiciliarios" hidden>
+        <div class="admin-menu-section">
+          <div class="admin-menu-section-head">
+            <h3>Calificaciones</h3>
+          </div>
+          <p class="admin-hint">Promedio de estrellas que cada domiciliario recibió de sus clientes al entregar.</p>
+          <div id="admin-driver-ratings-list"></div>
+        </div>
+        <div class="admin-menu-section">
+          <div class="admin-menu-section-head">
+            <h3>Cierres de turno</h3>
+          </div>
+          <p class="admin-hint">Efectivo esperado vs. entregado al cerrar turno. Últimos 50 registrados.</p>
+          <div id="admin-cash-settlements-list"></div>
+        </div>
+      </section>
+
+      <!-- --- Reportes --- -->
+      <section id="tab-reportes" hidden>
+        <div class="admin-menu-section">
+          <div class="admin-menu-section-head">
+            <h3>Ventas</h3>
+          </div>
+          <div class="admin-report-grid" id="admin-report-cards"></div>
+        </div>
+        <div class="admin-menu-section">
+          <div class="admin-menu-section-head">
+            <h3>Productos más vendidos (últimos 30 días)</h3>
+          </div>
+          <div id="admin-report-top-products"></div>
+        </div>
+        <div class="admin-menu-section">
+          <div class="admin-menu-section-head">
+            <h3>Exportar</h3>
+          </div>
+          <button type="button" class="btn btn-ghost" id="btn-export-orders-csv" style="margin: 0 var(--sp-4) var(--sp-4);">Exportar pedidos de hoy (Excel)</button>
+        </div>
+      </section>
+
+      <!-- --- Configuración --- -->
+      <section id="tab-config" hidden>
+        <nav class="admin-jump-nav">
+          <a href="#config-datos">Datos del negocio</a>
+          <a href="#config-zonas">Zonas de cobertura</a>
+          <a href="#config-avanzado">Avanzado</a>
+        </nav>
+        <h3 class="admin-jump-target" id="config-datos">Datos del negocio</h3>
+        <form class="admin-form" id="settings-form" style="margin: var(--sp-3) var(--sp-4) 0;">
+          <label class="checkbox-field">
+            <input type="checkbox" id="settings-is-open" checked />
+            <span>Aceptando pedidos ahora mismo</span>
+          </label>
+          <div class="field">
+            <label for="settings-closed-message">Mensaje cuando esté cerrado</label>
+            <textarea id="settings-closed-message" rows="2" placeholder="Estamos cerrados en este momento. Vuelve a intentarlo más tarde."></textarea>
+          </div>
+          <div class="field">
+            <label for="settings-phone">Teléfono del restaurante (para el botón de llamar)</label>
+            <input id="settings-phone" type="tel" placeholder="+57 300 000 0000" />
+          </div>
+          <div class="field">
+            <label for="settings-closing-time">Hora de cierre (opcional — avisa al cliente si falta poco)</label>
+            <input id="settings-closing-time" type="time" />
+          </div>
+          <div class="field">
+            <label for="settings-min-order">Pedido mínimo a domicilio (COP, 0 = sin mínimo)</label>
+            <input id="settings-min-order" type="number" min="0" step="1000" placeholder="0" />
+          </div>
+          <div class="field">
+            <label for="settings-default-fee">Costo de domicilio por defecto (COP)</label>
+            <input id="settings-default-fee" type="number" min="0" step="500" placeholder="5000" />
+          </div>
+          <label class="checkbox-field">
+            <input type="checkbox" id="settings-restrict-zones" />
+            <span>Rechazar pedidos a domicilio fuera de las zonas de abajo</span>
+          </label>
+          <div class="admin-form-actions">
+            <button type="submit" class="btn btn-primary">Guardar configuración</button>
+          </div>
+        </form>
+
+        <div class="admin-menu-section" id="config-zonas">
+          <div class="admin-menu-section-head">
+            <h3>Zonas de cobertura</h3>
+            <button type="button" class="admin-add-btn" id="btn-add-zone">+ Agregar</button>
+          </div>
+          <p class="admin-hint">Coincide por palabras clave en la dirección (ej: "manzano", "quinta oriental").</p>
+          <div id="admin-zones-list"></div>
+          <form class="admin-form" id="zone-form" hidden>
+            <input type="hidden" id="zone-form-idx" />
+            <div class="field">
+              <label for="zone-form-name">Nombre de la zona</label>
+              <input id="zone-form-name" type="text" placeholder="Ej: Centro" />
+            </div>
+            <div class="field">
+              <label for="zone-form-keywords">Palabras clave (separadas por coma)</label>
+              <input id="zone-form-keywords" type="text" placeholder="centro, quinta, manzano" />
+            </div>
+            <div class="field">
+              <label for="zone-form-fee">Costo de domicilio (COP)</label>
+              <input id="zone-form-fee" type="number" min="0" step="500" placeholder="5000" />
+            </div>
+            <div class="admin-form-actions">
+              <button type="button" class="btn btn-ghost" id="btn-cancel-zone">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Guardar zona</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Sección técnica, aparte a propósito: no es algo que un
+             cajero o dueño necesite ver a diario, se deja plegada. -->
+        <details class="admin-menu-section admin-advanced-section" id="config-avanzado">
+          <summary class="admin-menu-section-head admin-advanced-summary">
+            <h3>Avanzado</h3>
+          </summary>
+          <div class="admin-menu-section-head">
+            <h4>Errores recientes</h4>
+            <button type="button" class="btn btn-ghost admin-clear-errors-btn" id="btn-admin-clear-errors">Borrar historial</button>
+          </div>
+          <p class="admin-hint">Últimos 30 registrados — útil si algo no está funcionando bien.</p>
+          <div id="admin-error-log"></div>
+        </details>
+      </section>
+    </main>
+
+  </div>
+
+  <!-- Plantilla de comanda de cocina — solo se ve al imprimir
+       (ver @media print en admin.css); el resto del panel se
+       oculta automáticamente en ese momento. -->
+  <div id="print-ticket"></div>
+
+  <div class="toast" id="admin-toast"></div>
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,578 @@
+/* =========================================================
+   Estructura de la app
+   ========================================================= */
+#app {
+  /* Sin max-width/margin:auto — a propósito: antes esto centraba la
+     app en una "tarjeta" angosta desde los 560px de ancho, así que
+     cualquier celular grande o tablet (600-1000px) quedaba con
+     franjas vacías a los lados y el header se veía "cortado" en vez
+     de ocupar toda la pantalla. Ahora ocupa el 100% del ancho real en
+     celular y tablet; recién en escritorio (ver "Responsivo" más
+     abajo) el contenido usa una grilla con más columnas para
+     aprovechar el espacio, tampoco un tope de ancho artificial. */
+  width: 100%;
+  min-height: 100%;
+  background: var(--color-bg);
+  position: relative;
+  padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)); /* espacio para la nav inferior */
+}
+
+/* --- Header ---
+   padding-top con safe-area: cuando la app está instalada como
+   PWA en iOS (display:standalone), el contenido puede quedar
+   debajo del notch/Dynamic Island si no se reserva ese espacio. */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  min-height: var(--header-height);
+  padding: env(safe-area-inset-top, 0px) var(--sp-4) 0;
+  /* Antes casi negro (rgba(23,17,14)) — a pedido del usuario, ahora
+     rojo de marca (degradado flama→brasa), un tono más claro que
+     ese negro pero suficientemente oscuro para que el texto/íconos
+     claros (.brand-name, .btn-danger-link) sigan leyéndose bien. */
+  background: linear-gradient(180deg, var(--color-flame), var(--color-ember));
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-ember);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  letter-spacing: 0.04em;
+}
+/* La barra del header es oscura a propósito (contraste de marca
+   sobre el resto de la app, que es clara) — su texto no puede
+   seguir var(--color-text), que es oscuro (pensado para el fondo
+   claro del resto del sitio) y quedaría invisible sobre esa barra.
+   No afecta al brand-name del splash (#splash usa el fondo normal
+   de la app, ese sigue con su color heredado). */
+.app-header .brand-name {
+  color: #f3e9dc;
+}
+
+/* Mismo motivo que .brand-name arriba: el botón "Cerrar sesión" del
+   panel/domiciliarios vive directo sobre la barra del header (no
+   dentro de un icon-btn con su propio fondo). Antes un coral (#ff8a7a)
+   pensado para contrastar contra casi-negro — con el header ahora en
+   rojo de marca, ese mismo coral se mezclaba con el fondo (ambos
+   rojizos); se cambió a blanco, que sí se lee claro sobre el rojo. */
+.app-header .btn-danger-link {
+  color: #fff;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  /* Con 5 botones de ícono (llamar, WhatsApp, Instagram, buscar,
+     cuenta) ya no caben todos a la vez en un celular angosto — antes
+     se salían del header sin avisar. Con overflow-x + scrollbar
+     oculta, en vez de recortarse quedan deslizables (mismo patrón que
+     .admin-tabs en el panel); en la práctica casi nunca hace falta
+     deslizar porque el media query de abajo ya libera espacio.
+     min-width: 0 es el que de verdad lo hace funcionar: un hijo flex
+     por defecto no se encoge más allá del ancho de su contenido (su
+     min-width es "auto"), así que sin esto el overflow-x de arriba
+     nunca llega a activarse — el contenido se sale del header entero
+     en vez de quedar deslizable adentro. */
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.header-actions::-webkit-scrollbar {
+  display: none;
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.icon-btn:active {
+  transform: scale(0.94);
+}
+
+/* En un celular angosto (iPhone SE, ~360-390px) el nombre de marca +
+   5 botones de ícono no caben cómodos — se esconde el texto (queda
+   el logo solo, se sigue reconociendo la marca) y los botones se
+   achican un poco, en vez de depender solo del scroll horizontal de
+   .header-actions. */
+@media (max-width: 480px) {
+  .brand-name {
+    display: none;
+  }
+  .icon-btn,
+  .avatar-btn {
+    width: 38px;
+    height: 38px;
+  }
+  .header-actions {
+    gap: 6px;
+  }
+}
+
+.avatar-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  /* Antes var(--color-flame) — con el header ahora en rojo de marca,
+     un aro del mismo rojo casi desaparecía contra el fondo; un aro
+     claro sí se distingue. */
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  flex-shrink: 0;
+}
+.avatar-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- Hero --- */
+.hero {
+  position: relative;
+  padding: var(--sp-6) var(--sp-4) var(--sp-5);
+  overflow: hidden;
+  background:
+    radial-gradient(120% 100% at 100% 0%, var(--hero-glow-1), transparent 60%),
+    radial-gradient(90% 90% at 0% 100%, var(--hero-glow-2), transparent 55%),
+    var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  background: rgba(217, 165, 68, 0.12);
+  border: 1px solid rgba(217, 165, 68, 0.4);
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  margin-bottom: var(--sp-3);
+}
+
+.hero-title {
+  font-size: var(--fs-3xl);
+  line-height: 0.95;
+  color: var(--color-text);
+}
+.hero-title span {
+  color: var(--color-flame);
+}
+
+.hero-sub {
+  margin-top: var(--sp-3);
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  max-width: 34ch;
+}
+
+.hero-meta {
+  display: flex;
+  gap: var(--sp-4);
+  margin-top: var(--sp-5);
+  font-size: var(--fs-xs);
+  color: var(--color-text-faint);
+}
+.hero-meta strong {
+  color: var(--color-text);
+  display: block;
+  font-size: var(--fs-sm);
+}
+
+/* --- Barra de búsqueda ---
+   Siempre visible (no detrás de un botón de lupa) y con más
+   presencia — es lo primero que se toca al abrir la app. */
+.search-bar {
+  margin: calc(var(--sp-4) * -1) var(--sp-4) var(--sp-4);
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 8px 16px 8px 8px;
+  box-shadow: var(--shadow-float);
+}
+.search-bar-icon {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-bg);
+  background: var(--color-flame);
+}
+.search-bar input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--color-text);
+  font-size: var(--fs-sm);
+}
+.search-bar input::placeholder {
+  color: var(--color-text-faint);
+}
+
+/* --- Navegación de categorías --- */
+.category-nav {
+  position: sticky;
+  top: calc(var(--header-height) + env(safe-area-inset-top, 0px));
+  z-index: 90;
+  display: flex;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  overflow-x: auto;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  scrollbar-width: none;
+}
+.category-nav::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- Secciones de menú --- */
+.menu-section {
+  padding: var(--sp-5) var(--sp-4) 0;
+}
+
+.menu-section-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--sp-4);
+}
+.menu-section-title h2 {
+  font-size: var(--fs-lg);
+}
+.menu-section-title span {
+  font-size: var(--fs-xs);
+  color: var(--color-text-faint);
+  text-transform: none;
+  font-family: var(--font-body);
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-3);
+  align-items: stretch;
+}
+.product-grid .product-card {
+  height: 100%;
+}
+
+/* --- Empty state --- */
+.empty-state {
+  text-align: center;
+  padding: var(--sp-7) var(--sp-4);
+  color: var(--color-text-faint);
+}
+.empty-state h3 {
+  color: var(--color-text-muted);
+  font-size: var(--fs-md);
+  margin-bottom: var(--sp-2);
+}
+
+/* --- Barra de "pedido en curso" ---
+   Flota justo encima de la navegación inferior, siempre que haya un
+   pedido activo (ni entregado, ni cancelado, ni no_entregado) — para
+   que el cliente vea el estado sin tener que abrir su perfil. Mismo
+   truco de centrado que .bottom-nav en pantallas anchas (ver media
+   query más abajo). */
+.active-order-bar:not([hidden]) {
+  position: fixed;
+  left: var(--sp-3);
+  right: var(--sp-3);
+  bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+  z-index: calc(var(--z-bottom-nav) - 1);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 10px 14px;
+  background: var(--color-surface-raised);
+  border: 1px solid rgba(232, 65, 44, 0.4);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-float);
+  color: var(--color-text);
+  text-align: left;
+}
+.active-order-bar:active {
+  transform: scale(0.98);
+}
+.active-order-bar-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-flame);
+  flex-shrink: 0;
+  animation: driver-pulse-dot 1.4s ease-in-out infinite;
+}
+.active-order-bar-text {
+  flex: 1;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.active-order-bar-arrow {
+  color: var(--color-text-faint);
+  font-size: var(--fs-md);
+  flex-shrink: 0;
+}
+@keyframes driver-pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+/* --- Navegación inferior --- */
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-bottom-nav);
+  display: flex;
+  /* Antes casi negro (rgba(23,17,14)) — mismo cambio que .app-header,
+     rojo de marca en vez de negro. Sólido (no degradado) porque acá
+     no hay una "parte de arriba" que lucir más clara como en el
+     header. */
+  background: var(--color-ember);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--color-flame);
+  padding: 6px var(--sp-2) calc(6px + env(safe-area-inset-bottom, 0px));
+}
+.bottom-nav-item {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 4px;
+  border-radius: var(--radius-sm);
+  /* Antes var(--color-text-faint) (un gris cálido pensado para fondo
+     casi negro) — sobre el fondo rojo de marca se ve apagado; blanco
+     translúcido sí se distingue bien. */
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 10px;
+  font-weight: 800;
+  transition: color 0.15s ease;
+}
+.bottom-nav-item.is-active {
+  /* Antes var(--color-flame) — activo con el mismo rojo que ya es el
+     fondo de la barra se volvía invisible. Se probó dorado
+     (--color-gold-soft) como acento de "brasa encendida", pero a
+     pedido del usuario se dejó en blanco puro — más simple y con más
+     contraste tanto contra el fondo rojo como contra el blanco
+     translúcido del texto inactivo. */
+  color: #fff;
+}
+.bottom-nav-item:active {
+  transform: scale(0.94);
+}
+.bottom-nav-badge {
+  position: absolute;
+  top: 0;
+  right: 22%;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-flame);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Antes var(--color-bg) (el crema de la página) — ese aro claro
+     tenía sentido cuando la barra de abajo era casi negra (recortaba
+     el badge contra el fondo de la página, no contra la barra). Con
+     la barra ahora en rojo, el aro debe ser del mismo rojo de la
+     barra para seguir leyéndose como "parte de la barra", no como un
+     halo suelto. */
+  box-shadow: 0 0 0 2px var(--color-ember);
+}
+
+/* --- Overlay compartido (drawer / modal) --- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 7, 5, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: var(--z-drawer);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* --- Drawer (carrito / perfil) --- */
+.drawer {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: min(100%, var(--max-width));
+  background: var(--color-surface-raised);
+  z-index: calc(var(--z-drawer) + 1);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
+  /* Sin sombra mientras está cerrado a propósito: aunque el drawer
+     queda fuera de pantalla (translateX(100%)), el desenfoque de un
+     box-shadow tan grande (40px de blur) igual se cuela de vuelta
+     hacia el viewport por el borde derecho — eso es la "sombra" que
+     seguía viéndose en el marketplace en celular/escritorio después
+     de corregir el ancho del shell y la barra de scroll. Se activa
+     solo con .is-open, cuando el drawer de verdad está visible. */
+  box-shadow: none;
+}
+.drawer.is-open {
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.5);
+  transform: translateX(0);
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--color-border);
+}
+.drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--sp-4);
+}
+.drawer-footer {
+  padding: var(--sp-4);
+  border-top: 1px solid var(--color-border);
+}
+
+/* --- Modal (detalle de producto) --- */
+.modal {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 0);
+  width: min(100%, var(--max-width));
+  max-height: 88vh;
+  background: var(--color-surface-raised);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  z-index: calc(var(--z-modal) + 1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.modal[hidden] {
+  display: none;
+}
+.modal.is-open {
+  transform: translate(-50%, 0);
+}
+
+/* =========================================================
+   Responsivo — tablet y escritorio
+   =========================================================
+   La app ya NO es un "shell" centrado con ancho tope — ocupa el
+   100% real del ancho de pantalla en celular, tablet, portátil y
+   monitor de escritorio por igual (antes, a partir de 560px de
+   ancho, se centraba dejando franjas vacías a los lados y el header
+   se veía "cortado" en cualquier celular grande o tablet — ver la
+   nota en CLAUDE.md). Lo único que cambia con el ancho de pantalla
+   es cuántas columnas tiene la grilla de productos y el tamaño de
+   algunos textos/paddings. Drawers y modales siguen sin crecer
+   (usan --max-width, fijo) porque un panel de carrito no debe verse
+   como una página completa en un monitor grande. */
+
+/* --- Tablet --- */
+@media (min-width: 720px) {
+  .hero-title {
+    font-size: 4rem;
+  }
+  .hero-sub {
+    max-width: 46ch;
+  }
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* --- Escritorio --- */
+@media (min-width: 1080px) {
+  .hero {
+    padding: var(--sp-7) var(--sp-6) var(--sp-6);
+  }
+  .hero-title {
+    font-size: 4.5rem;
+  }
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .menu-section,
+  .category-nav {
+    padding-left: var(--sp-6);
+    padding-right: var(--sp-6);
+  }
+  .search-bar {
+    margin-left: var(--sp-6);
+    margin-right: var(--sp-6);
+  }
+}
+
+/* --- Laptop grande / monitor de escritorio --- una columna más en
+   la grilla de productos para que el ancho de más se llene con
+   contenido en vez de dejar tarjetas gigantes. */
+@media (min-width: 1440px) {
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1920px) {
+  .product-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "_nota": "Fotos reales con licencia libre de uso comercial, obtenidas via Openverse (openverse.org), que agrega contenido de Flickr, Wikimedia Commons y otras fuentes CC. Verifica los terminos de cada licencia si vas a usar esta app en produccion.",
+  "images": [
+    { "id": "picanha", "creator": "Juhele_CZ", "license": "CC0 1.0", "source": "https://www.flickr.com/photos/96541566@N06/51792913069" },
+    { "id": "ancho", "creator": "jeffreyw", "license": "CC BY 2.0", "source": "https://www.flickr.com/photos/7927684@N03/14589335795" },
+    { "id": "chorizo-bife", "creator": "WordRidden", "license": "CC BY 2.0", "source": "https://www.flickr.com/photos/97844767@N00/4477059538" },
+    { "id": "pollo-parrilla", "creator": "pulaw", "license": "CC BY 2.0", "source": "https://www.flickr.com/photos/35832040@N07/14893647985" },
+    { "id": "alitas-bbq", "creator": "@joefoodie", "license": "CC BY 2.0", "source": "https://www.flickr.com/photos/98178986@N00/5072409163" },
+    { "id": "costillas", "creator": "goodiesfirst", "license": "CC BY 2.0", "source": "https://www.flickr.com/photos/49215102@N00/302012430" },
+    { "id": "lomo-cerdo", "creator": "cookbookman17", "license": "CC BY 2.0", "source": "https://www.flickr.com/photos/58545726@N02/6789262828" },
+    { "id": "chorizo-parrilla", "creator": "avlxyz", "license": "CC BY-SA 2.0", "source": "https://www.flickr.com/photos/10559879@N00/4907412082" },
+    { "id": "morcilla", "creator": "mdid", "license": "CC BY 2.0", "source": "https://www.flickr.com/photos/58246614@N00/505826828", "nota": "recortada para encuadrar la morcilla" },
+    { "id": "arroz-blanco", "creator": "LP3567 886023", "license": "CC BY-SA", "source": "https://commons.wikimedia.org/w/index.php?curid=78866862" },
+    { "id": "yuca-frita", "creator": "fugzu", "license": "CC BY 2.0", "source": "https://www.flickr.com/photos/70253321@N00/6429782905" },
+    { "id": "ensalada-casa", "creator": "CodyR", "license": "CC BY 2.0", "source": "https://www.flickr.com/photos/21603648@N00/522649247" },
+    { "id": "flan-casero", "creator": "avlxyz", "license": "CC BY-SA 2.0", "source": "https://www.flickr.com/photos/10559879@N00/4247062952" },
+    { "id": "brigadeiro", "creator": "anathea", "license": "CC BY 2.0", "source": "https://www.flickr.com/photos/39399777@N00/388049571" },
+    { "id": "jugo-natural", "creator": "Flavio~", "license": "CC BY 2.0", "source": "https://www.flickr.com/photos/37873897@N06/5105184060" },
+    { "id": "gaseosa", "creator": "Manjeshwari poet mysore", "license": "Wikimedia Commons (uso comercial)", "source": "https://upload.wikimedia.org/wikipedia/commons/6/64/Nimbu_Soda_Or_Lemon_Soda.jpg" },
+    { "id": "cerveza", "creator": "compujeramey", "license": "CC BY 2.0", "source": "https://www.flickr.com/photos/37171504@N00/2980715301" }
+  ]
+}

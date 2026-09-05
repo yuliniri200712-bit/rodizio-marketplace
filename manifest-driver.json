@@ -1,0 +1,26 @@
+{
+  "name": "Domicilios Rodízio Cúcuta",
+  "short_name": "Domicilios Rodízio",
+  "description": "App de domiciliarios: pedidos asignados y ubicación en vivo.",
+  "start_url": "./driver.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f1e8",
+  "theme_color": "#f7f1e8",
+  "lang": "es-CO",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Rodízio Cúcuta — App de domiciliarios</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest-driver.json" />
+  <meta name="theme-color" content="#f7f1e8" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon-512.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <!-- Reutiliza los estilos de "app de personal" del panel (gate de
+       acceso, pestañas, tarjetas) — driver.css solo agrega/ajusta lo
+       propio de esta app (perfil, tarjeta de pedido, botones de mapa). -->
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/driver.css" />
+</head>
+<body>
+
+  <div id="fatal-error-banner" class="fatal-error-banner" hidden>
+    <img class="brand-mark" src="icon.svg" alt="" width="48" height="48" />
+    <h3>Algo salió mal</h3>
+    <p>Tuvimos un problema inesperado. Intenta recargar la página.</p>
+    <button type="button" class="btn btn-primary" onclick="location.reload()">Recargar</button>
+  </div>
+
+  <div id="driver-app">
+
+    <header class="app-header">
+      <div class="brand">
+        <img class="brand-mark" src="icon.svg" alt="" />
+        <span class="brand-name">Domicilios</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-danger-link" id="btn-driver-signout" hidden>Cerrar sesión</button>
+      </div>
+    </header>
+
+    <!-- ============ ESTADO: SIN SESIÓN ============ -->
+    <section class="admin-gate" id="driver-gate-signed-out">
+      <div class="admin-gate-card">
+        <div class="admin-gate-icon"><img src="icon.svg" alt="" /></div>
+        <h1 class="admin-gate-title">App de domiciliarios</h1>
+        <p class="admin-gate-text" id="driver-auth-subtitle">Inicia sesión con tu correo y contraseña de domiciliario.</p>
+
+        <form id="driver-auth-form">
+          <div class="field">
+            <label for="driver-email">Correo</label>
+            <input id="driver-email" type="email" autocomplete="email" placeholder="tucorreo@ejemplo.com" required />
+          </div>
+          <div class="field">
+            <label for="driver-password">Contraseña</label>
+            <input id="driver-password" type="password" autocomplete="current-password" placeholder="Mínimo 6 caracteres" minlength="6" required />
+          </div>
+          <label class="checkbox-field checkbox-field-consent" id="driver-consent-row" hidden>
+            <input type="checkbox" id="driver-consent-checkbox" />
+            <span>He leído y acepto la <a href="privacidad.html#domiciliario" target="_blank" rel="noopener noreferrer">política de tratamiento de datos personales</a>.</span>
+          </label>
+          <button type="submit" class="btn btn-primary" id="btn-driver-auth-submit">Iniciar sesión</button>
+        </form>
+
+        <div class="admin-auth-links">
+          <button type="button" class="admin-link-btn" id="btn-driver-toggle-mode">¿No tienes cuenta? Regístrate</button>
+          <button type="button" class="admin-link-btn" id="btn-driver-forgot">¿Olvidaste tu contraseña?</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ESTADO: SIN PERMISO ============ -->
+    <section class="admin-gate" id="driver-gate-not-driver" hidden>
+      <div class="admin-gate-card">
+        <div class="admin-gate-icon admin-gate-icon-locked">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 11V8a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <h1 class="admin-gate-title">No tienes acceso todavía</h1>
+        <p class="admin-gate-text" id="driver-gate-not-driver-text">
+          Esta cuenta inició sesión pero el restaurante todavía no te habilitó como domiciliario. Avísale al dueño para que te dé acceso.
+        </p>
+        <button class="btn btn-ghost" id="btn-driver-signout-2">Cerrar sesión</button>
+      </div>
+    </section>
+
+    <!-- ============ APP (solo domiciliarios habilitados) ============ -->
+    <main id="driver-main" hidden>
+
+      <!-- --- Saludo + estado de disponibilidad --- -->
+      <div class="driver-greeting">
+        <div>
+          <p class="driver-greeting-hi">Hola,</p>
+          <h1 class="driver-greeting-name" id="driver-greeting-name">Domiciliario</h1>
+          <p class="driver-rating-summary" id="driver-rating-summary" hidden></p>
+        </div>
+        <button type="button" class="driver-status-pill" id="driver-status-pill">
+          <span class="driver-status-dot"></span>
+          <span id="driver-status-pill-label">No disponible</span>
+        </button>
+      </div>
+
+      <!-- --- Números de hoy (poblado por JS) --- -->
+      <div class="driver-quick-stats" id="driver-quick-stats"></div>
+
+      <!-- --- Pedidos (lo primero que se necesita ver al abrir la app) --- -->
+      <nav class="segmented driver-tabs" id="driver-tabs">
+        <button type="button" data-filter="recoger" class="is-active">Para recoger<span class="admin-tab-badge" id="driver-badge-recoger" hidden>0</span></button>
+        <button type="button" data-filter="camino">En camino</button>
+        <button type="button" data-filter="historial">Historial</button>
+      </nav>
+
+      <div id="driver-orders-list"></div>
+
+      <!-- --- Cierre de turno / rendición de efectivo ---
+           Se revisa varias veces durante el turno (no solo al final),
+           por eso queda visible y no plegada — pero después de los
+           pedidos, que es lo que se necesita de un vistazo. --->
+      <section class="driver-cash-card">
+        <h2 class="driver-cash-title">Cierre de turno — efectivo</h2>
+        <p class="driver-cash-summary" id="driver-cash-summary">Sin pedidos pendientes por rendir.</p>
+        <div class="field" id="driver-cash-field" hidden>
+          <label for="driver-cash-actual">Efectivo que vas a entregar</label>
+          <input id="driver-cash-actual" type="number" min="0" inputmode="numeric" placeholder="0" />
+        </div>
+        <button type="button" class="btn btn-primary" id="btn-driver-close-shift" disabled>Cerrar turno y guardar rendición</button>
+        <details class="driver-cash-history">
+          <summary>Ver mis cierres anteriores</summary>
+          <div id="driver-cash-history-list"></div>
+        </details>
+      </section>
+
+      <!-- --- Mi perfil ---
+           Se llena una sola vez y casi no se vuelve a tocar — plegable
+           (abierta por defecto la primera vez) para que no le quite
+           protagonismo a los pedidos ni al cierre de turno. -->
+      <details class="driver-profile-card" open>
+        <summary class="driver-section-summary">
+          <h2 class="driver-cash-title">Mi perfil</h2>
+        </summary>
+        <div class="driver-profile-row">
+          <div class="field">
+            <label for="driver-name">Tu nombre</label>
+            <input id="driver-name" type="text" placeholder="Ej: Carlos Pérez" />
+          </div>
+          <div class="field">
+            <label for="driver-phone">Tu teléfono</label>
+            <input id="driver-phone" type="tel" placeholder="300 000 0000" />
+          </div>
+        </div>
+        <button type="button" class="btn btn-ghost" id="btn-driver-save-profile">Guardar datos</button>
+
+        <button class="btn btn-ghost notif-toggle" id="btn-driver-enable-push" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 0112 0c0 4 1.5 5.5 2 6.5H4c.5-1 2-2.5 2-6.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9.5 17a2.5 2.5 0 005 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span id="btn-driver-enable-push-label">Activar avisos de pedidos nuevos</span>
+        </button>
+      </details>
+    </main>
+
+  </div>
+
+  <div class="toast" id="driver-toast"></div>
+
+  <script type="module" src="js/driver.js"></script>
+</body>
+</html>

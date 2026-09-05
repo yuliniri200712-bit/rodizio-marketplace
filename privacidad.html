@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Rodízio Cúcuta — Tratamiento de datos personales</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+
+  <style>
+    /* Sin esto, el "scroll anchoring" nativo del navegador (pensar
+       que el usuario prefiere mantener la posición visual cuando el
+       contenido de arriba cambia de tamaño) compensa el scroll cada
+       vez que las fuentes async (Anton/Manrope) terminan de cargar y
+       el texto se reacomoda — moviendo el scroll lejos del ancla
+       (#cliente/#panel/#domiciliario) a la que el navegador acababa
+       de saltar al abrir el enlace, y dejando al usuario viendo el
+       mensaje general del inicio de la página en vez de su sección.
+       Desactivarlo en toda la página es lo correcto acá: no hay
+       ningún otro contenido que cargue de forma diferida después del
+       salto inicial que se beneficie de esa compensación. */
+    html, body {
+      overflow-anchor: none;
+    }
+    /* Solo esta página: es texto largo, no necesita layout de app. */
+    .policy-page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: var(--sp-6) var(--sp-5) var(--sp-8);
+    }
+    .policy-page h1 {
+      font-size: var(--fs-2xl);
+      margin-bottom: var(--sp-2);
+      /* Detalle rojo a juego con el resto del sistema (a pedido del
+         usuario) — una franja corta bajo el título, en vez de un
+         subrayado completo, para que se sienta como un acento de
+         marca y no como un link. */
+      border-bottom: 3px solid var(--color-flame);
+      display: inline-block;
+      padding-bottom: var(--sp-2);
+    }
+    .policy-intro {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+      line-height: 1.7;
+      margin-bottom: var(--sp-5);
+    }
+    /* Índice para saltar directo a "tu" sección — la mayoría de
+       quien abre este enlace viene de un solo formulario (cliente,
+       panel o domiciliario) y solo le interesa esa parte. */
+    .policy-jump {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-2);
+      margin-bottom: var(--sp-6);
+    }
+    .policy-jump a {
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-muted);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+    /* Detalle rojo al pasar el mouse/tocar — mismo criterio que el
+       resto del sistema (tarjetas y tabs ya resaltan en rojo al
+       interactuar). */
+    .policy-jump a:hover,
+    .policy-jump a:focus-visible {
+      border-color: var(--color-flame);
+      color: var(--color-flame);
+    }
+    .policy-section {
+      margin-top: var(--sp-7);
+      padding-top: var(--sp-6);
+      border-top: 1px solid var(--color-border);
+      scroll-margin-top: var(--sp-5);
+    }
+    .policy-section:first-of-type {
+      border-top: none;
+      padding-top: 0;
+      margin-top: var(--sp-6);
+    }
+    .policy-section-eyebrow {
+      display: inline-block;
+      font-size: var(--fs-xs);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-flame);
+      margin-bottom: var(--sp-2);
+    }
+    .policy-page h2 {
+      font-size: var(--fs-xl);
+      margin-bottom: var(--sp-4);
+      position: relative;
+      padding-left: var(--sp-4);
+    }
+    /* Marcador rojo al lado de cada título de sección — refuerza el
+       mismo acento que ya usa .policy-section-eyebrow justo arriba. */
+    .policy-page h2::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 4px;
+      bottom: 4px;
+      width: 4px;
+      border-radius: var(--radius-pill);
+      background: var(--color-flame);
+    }
+    .policy-page h3 {
+      font-size: var(--fs-md);
+      margin-top: var(--sp-5);
+      margin-bottom: var(--sp-2);
+      color: var(--color-flame);
+    }
+    .policy-page p,
+    .policy-page li {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+      line-height: 1.7;
+      margin-bottom: var(--sp-3);
+    }
+    .policy-page ul {
+      padding-left: var(--sp-5);
+    }
+    .policy-page strong {
+      color: var(--color-text);
+    }
+    .policy-back {
+      display: inline-block;
+      margin-top: var(--sp-7);
+      color: var(--color-flame);
+      font-weight: 700;
+      font-size: var(--fs-sm);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+    .policy-back:hover {
+      border-bottom-color: var(--color-flame);
+    }
+  </style>
+</head>
+<body>
+  <main class="policy-page">
+    <h1>Tratamiento de datos personales</h1>
+
+    <p class="policy-intro">
+      Este documento tiene tres partes, una para cada persona que usa
+      alguna de nuestras tres aplicaciones — léela según cuál te
+      corresponda. Ninguna vende ni comparte tus datos con terceros
+      para fines publicitarios; los usamos únicamente para operar el
+      restaurante.
+    </p>
+
+    <nav class="policy-jump">
+      <a href="#cliente">Soy cliente</a>
+      <a href="#panel">Trabajo en el panel</a>
+      <a href="#domiciliario">Soy domiciliario</a>
+    </nav>
+
+    <!-- ================= CLIENTE ================= -->
+    <section class="policy-section" id="cliente">
+      <span class="policy-section-eyebrow">App de clientes</span>
+      <h2>Si pides comida con nosotros</h2>
+
+      <p>
+        Para tomar tu pedido, calcular el domicilio y avisarte cuando
+        vaya en camino necesitamos algunos datos tuyos. Esto es
+        exactamente lo que la app hace con ellos:
+      </p>
+
+      <h3>Qué recogemos</h3>
+      <ul>
+        <li><strong>De tu cuenta de Google</strong> (al iniciar sesión): tu nombre, correo y foto de perfil — no vemos ni pedimos tu contraseña de Google, eso lo maneja Google directamente.</li>
+        <li><strong>Al hacer un pedido:</strong> tu teléfono de contacto y, si escoges "A domicilio" (no aplica si eliges "Recoger en tienda"), la dirección que escribes o, si usas el botón "Usar mi ubicación", tus coordenadas GPS exactas; además una referencia opcional, cualquier nota que escribas por producto (ej. "sin cebolla"), si programaste el pedido para una hora específica en vez de "lo antes posible", y el detalle de lo que pediste con el total.</li>
+        <li><strong>Si calificas al domiciliario</strong> después de que te entrega el pedido: una calificación de 1 a 5 estrellas, quedando ligada a ese pedido — no es un comentario público, solo la ve el domiciliario calificado (junto con sus otras calificaciones) y el restaurante.</li>
+        <li><strong>Si activas notificaciones:</strong> un identificador técnico de tu dispositivo (token push) para poder avisarte cuando cambie el estado de tu pedido.</li>
+        <li><strong>Tus favoritos y tu carrito</strong> se guardan solo en tu propio celular (localStorage) — nunca los mandamos a nuestro servidor hasta que confirmas un pedido.</li>
+        <li><strong>Uso de la app</strong> (Google Analytics para Firebase): eventos técnicos como qué producto viste o si completaste un pedido, para saber qué partes de la app se usan — sin tu nombre ni contacto asociado a esos eventos.</li>
+      </ul>
+
+      <h3>Quién ve tus datos</h3>
+      <ul>
+        <li>El personal del restaurante que gestiona pedidos (panel de administración) ve tu nombre, teléfono, dirección (si pediste a domicilio) y lo que pediste, incluida cualquier nota por producto — nunca tu contraseña de Google ni datos de tarjetas (hoy no se procesan pagos dentro de la app, todo pedido a domicilio se paga contra-entrega en efectivo).</li>
+        <li>Si tu pedido es a domicilio, el domiciliario asignado ve tu dirección, teléfono, y — solo si compartiste tu ubicación exacta — tus coordenadas GPS, para poder encontrarte. Ningún otro domiciliario ni otro cliente puede verlas.</li>
+        <li>Tu calificación al domiciliario la ve ese domiciliario y el restaurante — nunca otro cliente ni otro domiciliario.</li>
+      </ul>
+
+      <h3>Ubicación en tiempo real</h3>
+      <p>
+        Mientras tu pedido está "en camino", puedes ver la posición y
+        el recorrido reciente del domiciliario en el mapa — esa
+        ubicación es de él, no tuya. Si tú compartiste tu ubicación
+        exacta al hacer el pedido, esa sí es tuya y solo la ve el
+        domiciliario asignado y el panel, nunca otro cliente.
+      </p>
+
+      <h3>Cuánto tiempo se guarda</h3>
+      <p>
+        Mientras tengas una cuenta activa. Tu historial de pedidos se
+        conserva por motivos contables aunque borres la cuenta —
+        podemos anonimizar tu nombre y contacto de esos registros si lo
+        pides.
+      </p>
+    </section>
+
+    <!-- ================= PANEL ================= -->
+    <section class="policy-section" id="panel">
+      <span class="policy-section-eyebrow">Panel de administración</span>
+      <h2>Si trabajas gestionando pedidos, menú o inventario</h2>
+
+      <p>
+        Tu acceso al panel es una cuenta de trabajo, no una cuenta de
+        cliente — esto es lo que guardamos sobre tu actividad ahí.
+      </p>
+
+      <h3>Qué recogemos</h3>
+      <ul>
+        <li><strong>Tu correo y contraseña</strong> para iniciar sesión — la contraseña la cifra Firebase Authentication, nadie en el restaurante (ni nosotros) puede verla en texto plano.</li>
+        <li><strong>Tu rol</strong> (dueño o cajero), que determina qué pestañas puedes usar — un cajero no ve Menú, Reportes ni Configuración.</li>
+        <li><strong>Un registro de tus acciones sobre los pedidos:</strong> cada vez que cambias el estado de un pedido, lo cancelas (con el motivo que escribiste), asignas un domiciliario, pones un tiempo estimado de entrega o agregas una nota interna, queda guardado con tu correo y la hora exacta — es un historial de auditoría, visible para otros administradores, para poder saber quién hizo qué si algo sale mal.</li>
+        <li><strong>Si marcas a un cliente como bloqueado</strong> (solo el dueño puede hacerlo): esa marca queda asociada a tu cuenta como quien la puso, junto con la fecha.</li>
+        <li><strong>Si ocurre un error técnico</strong> mientras usas el panel: se guarda un registro liviano (qué pantalla, qué falló) para poder diagnosticarlo después — solo el dueño lo revisa, en Configuración → Avanzado.</li>
+      </ul>
+
+      <h3>Qué NO recogemos de ti</h3>
+      <p>
+        No registramos tu ubicación, no accedemos a tu dispositivo más
+        allá de lo que escribes en el panel, y no compartimos tu
+        correo con los clientes.
+      </p>
+
+      <h3>Datos de clientes y domiciliarios que vas a ver</h3>
+      <p>
+        Al usar el panel vas a tener acceso al nombre, teléfono,
+        dirección, notas por producto y pedidos de los clientes; a la
+        ubicación en vivo y el recorrido de los domiciliarios mientras
+        están en una entrega; y, si eres el dueño, a los cierres de
+        turno (efectivo esperado vs. entregado) que registra cada
+        domiciliario y al historial de errores técnicos. Es
+        información sensible de otras personas — solo debe usarse para
+        gestionar el pedido, nunca para fines personales o guardarla
+        fuera del sistema.
+      </p>
+
+      <h3>Cuánto tiempo se guarda</h3>
+      <p>
+        Tu cuenta y el historial de tus acciones se conservan mientras
+        tengas acceso al panel. Si dejas de trabajar en el restaurante,
+        pide al dueño que te retire el acceso — tu cuenta de correo
+        puede seguir existiendo, pero sin poder volver a entrar.
+      </p>
+    </section>
+
+    <!-- ================= DOMICILIARIO ================= -->
+    <section class="policy-section" id="domiciliario">
+      <span class="policy-section-eyebrow">App de domiciliarios</span>
+      <h2>Si entregas los pedidos</h2>
+
+      <p>
+        Como domiciliario compartes más información en tiempo real que
+        cualquier otra persona en el sistema — tu ubicación mientras
+        trabajas. Queremos que sepas exactamente cuándo y con quién se
+        comparte.
+      </p>
+
+      <h3>Qué recogemos</h3>
+      <ul>
+        <li><strong>Tu correo y contraseña</strong> para iniciar sesión, igual que en el panel.</li>
+        <li><strong>Tu nombre y teléfono</strong>, que tú mismo escribes en tu perfil — se le muestran al cliente al que le llevas un pedido, para que pueda identificarte y llamarte si necesita.</li>
+        <li><strong>Tu disponibilidad</strong> ("disponible" / "no disponible"), visible para quien te asigna pedidos en el panel.</li>
+        <li><strong>Tu ubicación GPS en tiempo real — solo mientras tienes un pedido "en camino".</strong> Se actualiza cada ~10 segundos y se comparte con el cliente de ese pedido específico y con el panel. Si llevas dos pedidos por la misma ruta, tu ubicación se comparte con ambos clientes a la vez.</li>
+        <li><strong>Si no puedes tomar o completar una entrega:</strong> al devolver una asignación o marcar "No se pudo entregar", el motivo que elijas de una lista queda guardado en el historial de ese pedido, junto con tu nombre.</li>
+        <li><strong>Al cerrar tu turno:</strong> cuánto efectivo esperaba el sistema que tuvieras (según tus entregas del día) contra cuánto declaraste tener — ese cierre queda guardado de forma permanente, ligado a tu nombre, y no se puede editar después de creado.</li>
+        <li><strong>Las propinas</strong> que registras al marcar un pedido como entregado — son tuyas, no se incluyen en el cálculo de efectivo que le debes al restaurante, solo quedan visibles para el panel como referencia.</li>
+        <li><strong>Un token de notificaciones push</strong>, si activas los avisos de pedidos nuevos.</li>
+      </ul>
+
+      <h3>Cuándo deja de compartirse tu ubicación</h3>
+      <p>
+        En el momento en que marcas un pedido como <strong>"Entregado"</strong>,
+        tu ubicación deja de compartirse con ese cliente y con el panel
+        de inmediato — no se queda visible ni un minuto más, ni el
+        último punto que registró. Fuera de una entrega activa, la app
+        no rastrea dónde estás.
+      </p>
+
+      <h3>Quién ve tu ubicación</h3>
+      <p>
+        Únicamente el cliente del pedido que llevas en ese momento y el
+        personal del panel de administración — nunca otro cliente, ni
+        otro domiciliario, ni nadie fuera del sistema. Tu ubicación no
+        se usa para nada distinto a coordinar esa entrega (no medimos
+        tu desempeño con ella ni se comparte con terceros).
+      </p>
+
+      <h3>Tus cierres de turno</h3>
+      <p>
+        Cada cierre que registras lo puede ver el dueño del
+        restaurante (para cuadrar caja) y tú mismo, en tu propio
+        historial dentro de la app — nunca otro domiciliario. Es un
+        registro contable, no se usa para calificar tu trabajo.
+      </p>
+
+      <h3>Cuánto tiempo se guarda</h3>
+      <p>
+        El recorrido de una entrega es temporal — se borra al marcar el
+        pedido como entregado y, aunque no lo marques, solo guarda los
+        últimos minutos recientes de recorrido, no un historial
+        permanente de tus movimientos.
+      </p>
+    </section>
+
+    <p style="margin-top: var(--sp-5);">
+      Puedes pedirnos en cualquier momento conocer, actualizar,
+      corregir o eliminar tus datos, y revocar tu autorización —
+      escríbenos al teléfono o correo de contacto del restaurante.
+    </p>
+
+    <a class="policy-back" href="index.html" id="policy-back-link">← Volver</a>
+    <script>
+      if (window.history.length > 1) {
+        document.getElementById('policy-back-link').addEventListener('click', (e) => {
+          e.preventDefault();
+          window.history.back();
+        });
+      }
+
+      // Mantener al usuario en SU sección (#cliente/#panel/
+      // #domiciliario) mientras cargan las fuentes de Google Fonts
+      // (Anton/Manrope, async): antes de esto, el salto inicial del
+      // navegador al abrir con #ancla ocurría antes de que el texto
+      // terminara de reacomodarse por el cambio de fuente, dejando al
+      // usuario viendo el mensaje general del inicio de la página en
+      // vez de su sección (el `overflow-anchor: none` de arriba ya
+      // evita que el navegador "corrija" el scroll solo cuando eso
+      // pasa). Este salto explícito, ya con las fuentes cargadas
+      // (`fonts.ready`), es el que deja al usuario en el lugar
+      // correcto desde el principio.
+      function jumpToOwnSection() {
+        if (!location.hash) return;
+        const target = document.querySelector(location.hash);
+        if (!target) return;
+        // behavior:'instant' a propósito: 'auto' respetaría el
+        // `scroll-behavior: smooth` global de base.css y se vería como
+        // un scroll animado innecesario justo al abrir la página.
+        target.scrollIntoView({ block: 'start', behavior: 'instant' });
+      }
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(jumpToOwnSection).catch(jumpToOwnSection);
+      } else {
+        jumpToOwnSection();
+      }
+    </script>
+  </main>
+</body>
+</html>

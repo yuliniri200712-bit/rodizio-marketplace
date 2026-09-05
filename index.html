@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Rodízio Cúcuta — Menú y Pedidos</title>
+  <meta name="description" content="Pide tu rodízio favorito desde el celular: menú, carrito y seguimiento de pedido." />
+
+  <!-- Vista previa al compartir el link (WhatsApp, Facebook, etc.) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Rodízio Cúcuta" />
+  <meta property="og:title" content="Rodízio Cúcuta — Menú y Pedidos" />
+  <meta property="og:description" content="Pide tu rodízio favorito desde el celular: menú, carrito y seguimiento de pedido." />
+  <meta property="og:url" content="https://rodiziomarketplace.web.app/" />
+  <meta property="og:image" content="https://rodiziomarketplace.web.app/images/picanha.jpg" />
+  <meta property="og:locale" content="es_CO" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Rodízio Cúcuta — Menú y Pedidos" />
+  <meta name="twitter:description" content="Pide tu rodízio favorito desde el celular: menú, carrito y seguimiento de pedido." />
+  <meta name="twitter:image" content="https://rodiziomarketplace.web.app/images/picanha.jpg" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#f7f1e8" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon-512.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <!-- Tipografía -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Estilos, en capas de responsabilidad separadas -->
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+  <!-- ============ SPLASH ============ -->
+  <div id="splash" aria-hidden="true">
+    <img class="brand-mark" src="icon.svg" alt="" />
+    <span class="brand-name">Rodízio Cúcuta</span>
+    <div class="spark-line"></div>
+  </div>
+
+  <div id="fatal-error-banner" class="fatal-error-banner" hidden>
+    <img class="brand-mark" src="icon.svg" alt="" width="48" height="48" />
+    <h3>Algo salió mal</h3>
+    <p>Tuvimos un problema inesperado. Intenta recargar la página — si sigue pasando, llámanos.</p>
+    <button type="button" class="btn btn-primary" onclick="location.reload()">Recargar</button>
+  </div>
+
+  <div id="app">
+
+    <!-- ============ HEADER ============ -->
+    <header class="app-header">
+      <div class="brand">
+        <img class="brand-mark" src="icon.svg" alt="" />
+        <span class="brand-name">Rodízio Cúcuta</span>
+      </div>
+      <div class="header-actions">
+        <a class="icon-btn" id="btn-call-restaurant" href="#" aria-label="Llamar al restaurante" hidden>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6.5 4h3l1.5 4-2 1.5a11 11 0 005.5 5.5L16 13l4 1.5v3a2 2 0 01-2.2 2A17 17 0 014.5 6.2 2 2 0 016.5 4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="icon-btn" id="btn-whatsapp-restaurant" href="#" target="_blank" rel="noopener noreferrer" aria-label="Escribir al restaurante por WhatsApp" hidden>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1112 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1s-.7.8-.9 1c-.2.2-.3.2-.6.1s-1.2-.4-2.2-1.4c-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6l.4-.5c.1-.1.2-.3.2-.4.1-.1.1-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 4 3.5.6.2 1 .4 1.3.5.6.2 1.1.1 1.5.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.2-.2-.4-.3z"/></svg>
+        </a>
+        <a class="icon-btn" id="btn-instagram-restaurant" href="https://www.instagram.com/rodizio_cucuta/" target="_blank" rel="noopener noreferrer" aria-label="Ver Instagram del restaurante">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/></svg>
+        </a>
+        <button class="icon-btn" id="btn-search-toggle" aria-label="Buscar en el menú">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <!-- Se reemplaza por el avatar del usuario cuando hay sesión iniciada -->
+        <button class="icon-btn" id="btn-account" aria-label="Cuenta">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 20c1.5-4 6-5 8-5s6.5 1 8 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ============ AVISO: CERRADO ============ -->
+    <div class="closed-banner" id="closed-banner" hidden>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span id="closed-banner-text">Estamos cerrados en este momento.</span>
+    </div>
+
+    <!-- ============ AVISO: CIERRA PRONTO ============ -->
+    <div class="closed-banner closing-soon-banner" id="closing-soon-banner" hidden>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span id="closing-soon-banner-text">Cerramos pronto.</span>
+    </div>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <span class="hero-badge">Pase libre — todo el rodízio</span>
+      <h1 class="hero-title">CARNE AL<br /><span>ESPETO</span></h1>
+      <p class="hero-sub">Corte a corte, directo de la parrilla de carbón a tu mesa o a tu puerta.</p>
+      <div class="hero-meta">
+        <div><strong>25–40 min</strong>tiempo de entrega</div>
+        <div><strong>Cúcuta</strong>Norte de Santander</div>
+      </div>
+
+    </section>
+
+    <!-- ============ BÚSQUEDA (siempre visible, estilo pastilla) ============ -->
+    <div class="search-bar" id="search-bar">
+      <span class="search-bar-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>
+      <input type="search" id="search-input" placeholder="Buscar picanha, jugo, postre…" aria-label="Buscar productos" />
+    </div>
+
+    <!-- ============ CALCULADORA DE PORCIONES ============ -->
+    <div class="portion-calc">
+      <label for="portion-people">¿Para cuántas personas?</label>
+      <div class="portion-calc-row">
+        <div class="qty-stepper">
+          <button type="button" id="portion-minus" aria-label="Restar">−</button>
+          <span id="portion-people">2</span>
+          <button type="button" id="portion-plus" aria-label="Sumar">+</button>
+        </div>
+        <p id="portion-suggestion" class="portion-suggestion"></p>
+      </div>
+    </div>
+
+    <!-- ============ LO MÁS PEDIDO (poblado por JS, se oculta si no hay destacados) ============ -->
+    <section class="featured-section" id="featured-section" hidden>
+      <div class="menu-section-title featured-title">
+        <h2>Lo más pedido</h2>
+      </div>
+      <div class="featured-scroll" id="featured-scroll"></div>
+    </section>
+
+    <!-- ============ CATEGORÍAS (poblado por JS) ============ -->
+    <nav class="category-nav" id="category-nav" aria-label="Categorías del menú"></nav>
+
+    <!-- ============ MENÚ (poblado por JS) ============ -->
+    <main id="menu-content"></main>
+
+  </div>
+
+  <!-- ============ BARRA DE PEDIDO EN CURSO ============ -->
+  <button type="button" class="active-order-bar" id="active-order-bar" hidden>
+    <span class="active-order-bar-dot"></span>
+    <span class="active-order-bar-text" id="active-order-bar-text"></span>
+    <span class="active-order-bar-arrow">›</span>
+  </button>
+
+  <!-- ============ NAVEGACIÓN INFERIOR ============ -->
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Navegación principal">
+    <button class="bottom-nav-item is-active" id="nav-inicio" data-nav="inicio">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 11.5L12 4l8 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9a1 1 0 001 1h10a1 1 0 001-1v-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Inicio</span>
+    </button>
+    <button class="bottom-nav-item" id="nav-favoritos" data-nav="favoritos">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.099 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Favoritos</span>
+    </button>
+    <button class="bottom-nav-item" id="nav-carrito" data-nav="carrito">
+      <span class="bottom-nav-badge" id="bottom-nav-cart-badge" hidden>0</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 8h12l-1.2 10.2a2 2 0 01-2 1.8H9.2a2 2 0 01-2-1.8L6 8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 8V6a3 3 0 016 0v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>Carrito</span>
+    </button>
+    <button class="bottom-nav-item" id="nav-perfil" data-nav="perfil">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 20c1.5-4 6-5 8-5s6.5 1 8 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>Perfil</span>
+    </button>
+  </nav>
+
+  <!-- ============ OVERLAY COMPARTIDO ============ -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- ============ MODAL: DETALLE DE PRODUCTO ============ -->
+  <div class="modal" id="product-modal" hidden>
+    <div class="drawer-header">
+      <h3 id="modal-product-name">Producto</h3>
+      <button class="icon-btn" id="btn-close-modal" aria-label="Cerrar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="drawer-body">
+      <p id="modal-product-desc" style="color: var(--color-text-muted); margin-bottom: var(--sp-4);"></p>
+      <div class="field">
+        <label for="modal-notes">Notas para la cocina (opcional)</label>
+        <textarea id="modal-notes" rows="2" placeholder="Ej: término tres cuartos, sin cebolla…"></textarea>
+      </div>
+    </div>
+    <p id="modal-out-of-stock-notice" class="modal-out-of-stock-notice" hidden>Este producto está agotado por ahora.</p>
+    <div class="drawer-footer" style="display:flex; align-items:center; gap: var(--sp-4);">
+      <div class="qty-stepper">
+        <button id="modal-qty-minus" aria-label="Restar">−</button>
+        <span id="modal-qty-value">1</span>
+        <button id="modal-qty-plus" aria-label="Sumar">+</button>
+      </div>
+      <button class="btn btn-primary" id="btn-add-to-cart">Agregar · <span id="modal-total-price">$0</span></button>
+    </div>
+  </div>
+
+  <!-- ============ MODAL: RECIBO DE PEDIDO ============ -->
+  <div class="modal" id="order-detail-modal" hidden>
+    <div class="drawer-header">
+      <h3>Recibo del pedido</h3>
+      <button class="icon-btn" id="btn-close-order-detail" aria-label="Cerrar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="drawer-body" id="order-detail-body"></div>
+  </div>
+
+  <!-- ============ DRAWER: CARRITO / CHECKOUT ============ -->
+  <aside class="drawer" id="cart-drawer" aria-label="Carrito de compras">
+    <div class="drawer-header">
+      <h3 id="cart-drawer-title">Tu pedido</h3>
+      <button class="icon-btn" id="btn-close-cart" aria-label="Cerrar carrito"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+
+    <!-- Vista: carrito -->
+    <div class="drawer-body" id="cart-view">
+      <ul id="cart-items-list"></ul>
+    </div>
+    <div class="drawer-footer" id="cart-footer">
+      <div class="summary-row"><span>Subtotal</span><span id="cart-subtotal">$0</span></div>
+      <button class="btn btn-primary" id="btn-go-checkout" style="margin-top: var(--sp-3);">Continuar</button>
+    </div>
+
+    <!-- Vista: checkout (oculta hasta pulsar "Continuar") -->
+    <div class="drawer-body" id="checkout-view" hidden>
+      <h4 class="checkout-section-title">¿Cómo lo quieres?</h4>
+      <div class="segmented" id="delivery-mode">
+        <button data-mode="domicilio" class="is-active">Domicilio</button>
+        <button data-mode="recoger">Recoger en tienda</button>
+      </div>
+
+      <div id="address-fields">
+        <div class="saved-addresses" id="saved-addresses" hidden></div>
+        <div class="field">
+          <label for="ck-address">Dirección de entrega</label>
+          <div class="input-with-action">
+            <input id="ck-address" type="text" placeholder="Calle, número, barrio" />
+            <button type="button" class="input-action-btn" id="btn-use-location" aria-label="Usar mi ubicación">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+          <p class="field-hint" id="zone-info" hidden></p>
+        </div>
+        <div class="field">
+          <label for="ck-reference">Referencia (opcional)</label>
+          <input id="ck-reference" type="text" placeholder="Casa azul, portón negro…" />
+        </div>
+        <label class="checkbox-field">
+          <input type="checkbox" id="ck-save-address" />
+          <span>Guardar esta dirección para la próxima vez</span>
+        </label>
+        <div class="field" id="ck-address-label-field" hidden>
+          <label for="ck-address-label">¿Cómo la quieres llamar?</label>
+          <input id="ck-address-label" type="text" placeholder="Casa, Trabajo, Casa de mamá…" maxlength="24" />
+        </div>
+      </div>
+
+      <h4 class="checkout-section-title">Datos de contacto</h4>
+      <div class="field">
+        <label for="ck-phone">Teléfono de contacto</label>
+        <input id="ck-phone" type="tel" placeholder="300 000 0000" />
+      </div>
+
+      <h4 class="checkout-section-title">¿Cuándo?</h4>
+      <div class="segmented" id="schedule-mode">
+        <button type="button" data-schedule="asap" class="is-active">Lo antes posible</button>
+        <button type="button" data-schedule="later">Programar</button>
+      </div>
+      <div class="field" id="schedule-time-field" hidden>
+        <label for="ck-schedule-time">Hora deseada</label>
+        <input id="ck-schedule-time" type="time" />
+      </div>
+
+      <h4 class="checkout-section-title">Resumen</h4>
+      <div class="checkout-summary-box">
+        <div class="summary-row"><span>Subtotal</span><span id="ck-subtotal">$0</span></div>
+        <div class="summary-row"><span>Domicilio</span><span id="ck-shipping">$0</span></div>
+        <div class="summary-row total"><span>Total</span><span id="ck-total">$0</span></div>
+      </div>
+      <p class="field-hint field-hint-warning" id="min-order-hint" hidden></p>
+    </div>
+    <div class="drawer-footer" id="checkout-footer" hidden>
+      <button class="btn btn-primary" id="btn-confirm-order">Confirmar pedido</button>
+    </div>
+  </aside>
+
+  <!-- ============ MODAL: INICIAR SESIÓN ============ -->
+  <div class="modal" id="auth-modal" hidden>
+    <div class="drawer-header">
+      <h3>Iniciar sesión</h3>
+      <button class="icon-btn" id="btn-close-auth" aria-label="Cerrar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="drawer-body">
+      <p style="color: var(--color-text-muted); margin-bottom: var(--sp-5);">
+        Inicia sesión para guardar tu pedido y hacerle seguimiento. Solo lo necesitas al momento de confirmar la compra.
+      </p>
+      <label class="checkbox-field checkbox-field-consent">
+        <input type="checkbox" id="auth-consent-checkbox" />
+        <span>He leído y acepto la <a href="privacidad.html#cliente" target="_blank" rel="noopener noreferrer">política de tratamiento de datos personales</a>, y autorizo su uso para gestionar mi pedido.</span>
+      </label>
+
+      <button class="btn btn-google" id="btn-google-signin" disabled>
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4c-7.4 0-13.8 4.2-17 10.7z"/><path fill="#4CAF50" d="M24 44c5.5 0 10.4-2.1 14.1-5.6l-6.5-5.5C29.6 34.7 26.9 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.6 5.1C9.9 39.6 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.2 4.2-4.1 5.6l6.5 5.5C40.9 36.5 44 30.9 44 24c0-1.3-.1-2.7-.4-3.5z"/></svg>
+        Continuar con Google
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ DRAWER: PERFIL ============ -->
+  <aside class="drawer" id="profile-drawer" aria-label="Tu perfil">
+    <div class="drawer-header">
+      <h3>Mi cuenta</h3>
+      <button class="icon-btn" id="btn-close-profile" aria-label="Cerrar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="drawer-body">
+      <div class="profile-header">
+        <div class="profile-avatar"><img id="profile-avatar-img" src="" alt="" /></div>
+        <div>
+          <div class="profile-name" id="profile-name">—</div>
+          <div class="profile-email" id="profile-email">—</div>
+        </div>
+      </div>
+      <button class="btn btn-ghost notif-toggle" id="btn-enable-push" type="button" style="margin-bottom: var(--sp-5);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 0112 0c0 4 1.5 5.5 2 6.5H4c.5-1 2-2.5 2-6.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9.5 17a2.5 2.5 0 005 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span id="btn-enable-push-label">Activar notificaciones de pedidos</span>
+      </button>
+
+      <h4 style="font-size: var(--fs-sm); text-transform:none; color: var(--color-text-muted); margin-bottom: var(--sp-3);">Pedidos recientes</h4>
+      <div id="orders-list"></div>
+    </div>
+    <div class="drawer-footer">
+      <button class="btn btn-danger-link" id="btn-signout" style="width:100%;">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <!-- ============ TOAST ============ -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Lógica de la app, cargada al final y como módulos ES -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
